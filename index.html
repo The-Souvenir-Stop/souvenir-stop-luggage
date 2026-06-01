@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luggage Storage — The Souvenir Stop</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --color-bg: #ffffff; --color-bg2: #f7f7f5; --color-text: #1a1a18;
+      --color-text2: #6b6b68; --color-text3: #9b9b98; --color-border: #e5e5e2;
+      --radius-lg: 12px; --radius-md: 8px; --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--color-bg2); color: var(--color-text); min-height: 100vh; }
+    .page { max-width: 640px; margin: 0 auto; padding: 2rem 1rem; }
+    .header { margin-bottom: 2rem; text-align: center; }
+    .store-name { font-size: 24px; font-weight: 600; }
+    .store-sub { font-size: 14px; color: var(--color-text2); margin-top: 4px; }
+    .section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text3); margin-bottom: 10px; }
+    .card { background: var(--color-bg); border: 0.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+    .field { margin-bottom: 1rem; } .field:last-child { margin-bottom: 0; }
+    .field label { font-size: 13px; color: var(--color-text2); display: block; margin-bottom: 6px; }
+    .field input, .field select { width: 100%; height: 38px; padding: 0 10px; border-radius: var(--radius-md); border: 0.5px solid var(--color-border); background: var(--color-bg); color: var(--color-text); font-size: 14px; font-family: var(--font); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .phone-row { display: grid; grid-template-columns: 170px 1fr; gap: 8px; }
+    .datetime-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .bag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 8px; margin-bottom: 1rem; }
+    .bag-option { border: 0.5px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 10px; cursor: pointer; text-align: center; transition: all 0.15s; background: var(--color-bg); }
+    .bag-option:hover { border-color: #378ADD; }
+    .bag-option.selected { border: 2px solid #378ADD; background: #E6F1FB; }
+    .bag-option.selected .bag-name, .bag-option.selected .bag-icon { color: #185FA5; }
+    .bag-icon { font-size: 22px; margin-bottom: 6px; color: var(--color-text2); }
+    .bag-name { font-size: 12px; font-weight: 500; }
+    .bag-price { font-size: 11px; color: var(--color-text2); margin-top: 2px; }
+    .qty-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; justify-content: center; }
+    .qty-btn { width: 26px; height: 26px; border-radius: 50%; border: 0.5px solid var(--color-border); background: transparent; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--color-text); }
+    .qty-val { font-size: 14px; font-weight: 500; min-width: 18px; text-align: center; }
+    .pricing-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; padding: 3px 8px; border-radius: 20px; font-weight: 500; margin-top: 8px; }
+    .badge-hourly { background: #FAEEDA; color: #854F0B; }
+    .badge-daily { background: #E6F1FB; color: #185FA5; }
+    .badge-multiday { background: #EEEDFE; color: #534AB7; }
+    .summary-box { background: var(--color-bg2); border-radius: var(--radius-md); padding: 1rem; margin-top: 1rem; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; color: var(--color-text2); }
+    .summary-total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; border-top: 0.5px solid var(--color-border); margin-top: 8px; padding-top: 8px; }
+    .late-fee-notice { border: 0.5px solid #F09595; background: #FCEBEB; border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 1rem; font-size: 12px; color: #A32D2D; line-height: 1.6; }
+    .checkbox-row { display: flex; align-items: flex-start; gap: 10px; margin-top: 1rem; }
+    .checkbox-row input { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+    .checkbox-row label { font-size: 12px; color: var(--color-text2); cursor: pointer; line-height: 1.5; }
+    .btn-primary { width: 100%; padding: 13px; background: #1a1a18; color: #fff; border: none; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 1rem; transition: opacity 0.15s; font-family: var(--font); }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .confirm-banner { background: #EAF3DE; border: 0.5px solid #97C459; border-radius: var(--radius-md); padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; display: none; }
+    .confirm-banner.show { display: block; }
+    .confirm-id { font-size: 28px; font-weight: 600; color: #3B6D11; letter-spacing: 0.05em; margin: 8px 0; }
+    .confirm-sub { font-size: 13px; color: #639922; }
+    .time-warning { font-size: 12px; color: #854F0B; background: #FAEEDA; border-radius: var(--radius-md); padding: 8px 12px; margin-top: 8px; display: none; }
+    .whatsapp-hint { font-size: 11px; color: var(--color-text3); margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+    .pricing-note { font-size: 12px; color: var(--color-text2); background: var(--color-bg2); border-radius: var(--radius-md); padding: 10px 12px; margin-bottom: 1rem; line-height: 1.5; border: 0.5px solid var(--color-border); }
+    .error-msg { font-size: 12px; color: #A32D2D; background: #FCEBEB; border-radius: var(--radius-md); padding: 10px 12px; margin-top: 8px; display: none; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="store-name"><i class="ti ti-luggage" style="margin-right:8px;"></i>The Souvenir Stop</div>
+    <div class="store-sub">Luggage Storage · New York City</div>
+  </div>
+
+  <div id="confirm-banner" class="confirm-banner">
+    <div style="font-size:13px;color:#639922;"><i class="ti ti-circle-check" style="margin-right:4px;"></i>Booking confirmed!</div>
+    <div class="confirm-id" id="confirm-id-display">TSS-0000</div>
+    <div class="confirm-sub">Show this ID at the store when you drop off your bags.<br>Pay at the store.</div>
+  </div>
+
+  <p class="section-title">Your info</p>
+  <div class="card">
+    <div class="row">
+      <div class="field"><label>First name</label><input type="text" id="fname" placeholder="Jane" /></div>
+      <div class="field"><label>Last name</label><input type="text" id="lname" placeholder="Smith" /></div>
+    </div>
+    <div class="field"><label>Email</label><input type="email" id="email" placeholder="jane@email.com" /></div>
+    <div class="field">
+      <label>Phone number</label>
+      <div class="phone-row"><select id="country-code"></select><input type="tel" id="phone" placeholder="212 555 0100" /></div>
+      <div class="whatsapp-hint"><i class="ti ti-brand-whatsapp" style="font-size:13px;color:#25D366;"></i>We may contact you via WhatsApp if needed</div>
+    </div>
+  </div>
+
+  <p class="section-title">Drop-off &amp; pick-up</p>
+  <div class="card">
+    <div class="datetime-grid">
+      <div class="field"><label>Drop-off date</label><input type="date" id="dropoff-date" onchange="onTimeChange()" /></div>
+      <div class="field"><label>Drop-off time</label><select id="dropoff-time" onchange="onTimeChange()"></select></div>
+      <div class="field"><label>Pick-up date</label><input type="date" id="pickup-date" onchange="onTimeChange()" /></div>
+      <div class="field"><label>Pick-up time</label><select id="pickup-time" onchange="onTimeChange()"></select></div>
+    </div>
+    <div id="time-warning" class="time-warning"><i class="ti ti-alert-triangle" style="margin-right:5px;"></i>Pick-up time must be after drop-off time.</div>
+    <div id="pricing-mode-badge"></div>
+  </div>
+
+  <div class="pricing-note"><i class="ti ti-info-circle" style="margin-right:4px;"></i><strong>Pricing:</strong> Under 3 hours = hourly rate. 3+ hours or multiple days = full day rate per day.</div>
+
+  <p class="section-title">Select your bags</p>
+  <div class="bag-grid" id="bag-grid"></div>
+
+  <div class="summary-box">
+    <div class="summary-row"><span>Bags</span><span id="sum-bags">—</span></div>
+    <div class="summary-row"><span>Duration</span><span id="sum-duration">—</span></div>
+    <div class="summary-row"><span>Pricing mode</span><span id="sum-mode">—</span></div>
+    <div class="summary-total"><span>Total</span><span id="sum-total">$0.00</span></div>
+  </div>
+
+  <div class="late-fee-notice" style="margin-top:1rem;">
+    <strong><i class="ti ti-alert-circle" style="margin-right:4px;"></i>Late check-out fee:</strong> Bags not collected at your scheduled pick-up time will incur an additional charge at the standard hourly rate. If you anticipate a delay, please contact us in advance via WhatsApp.
+  </div>
+  <div class="checkbox-row">
+    <input type="checkbox" id="policy-agree" />
+    <label for="policy-agree">I have read and agree to the late check-out fee policy above.</label>
+  </div>
+  <div id="error-msg" class="error-msg"></div>
+  <button class="btn-primary" id="submit-btn" onclick="submitBooking()"><i class="ti ti-check" style="margin-right:6px;"></i>Confirm booking — pay at store</button>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fzvjjwsxtfgakgzrblqe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_jt7_MlpqQuucSlY-o_7X6Q_y20b48S6';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const COUNTRIES = [["Afghanistan","+93"],["Albania","+355"],["Algeria","+213"],["Argentina","+54"],["Armenia","+374"],["Australia","+61"],["Austria","+43"],["Azerbaijan","+994"],["Bahamas","+1-242"],["Bahrain","+973"],["Bangladesh","+880"],["Belarus","+375"],["Belgium","+32"],["Bolivia","+591"],["Bosnia","+387"],["Brazil","+55"],["Bulgaria","+359"],["Cambodia","+855"],["Cameroon","+237"],["Canada","+1"],["Chile","+56"],["China","+86"],["Colombia","+57"],["Costa Rica","+506"],["Croatia","+385"],["Cuba","+53"],["Cyprus","+357"],["Czech Republic","+420"],["Denmark","+45"],["Dominican Republic","+1-809"],["Ecuador","+593"],["Egypt","+20"],["El Salvador","+503"],["Estonia","+372"],["Ethiopia","+251"],["Finland","+358"],["France","+33"],["Georgia","+995"],["Germany","+49"],["Ghana","+233"],["Greece","+30"],["Guatemala","+502"],["Haiti","+509"],["Honduras","+504"],["Hungary","+36"],["Iceland","+354"],["India","+91"],["Indonesia","+62"],["Iran","+98"],["Iraq","+964"],["Ireland","+353"],["Israel","+972"],["Italy","+39"],["Jamaica","+1-876"],["Japan","+81"],["Jordan","+962"],["Kazakhstan","+7"],["Kenya","+254"],["Kuwait","+965"],["Latvia","+371"],["Lebanon","+961"],["Lithuania","+370"],["Luxembourg","+352"],["Malaysia","+60"],["Maldives","+960"],["Malta","+356"],["Mexico","+52"],["Moldova","+373"],["Morocco","+212"],["Myanmar","+95"],["Nepal","+977"],["Netherlands","+31"],["New Zealand","+64"],["Nicaragua","+505"],["Nigeria","+234"],["Norway","+47"],["Oman","+968"],["Pakistan","+92"],["Palestine","+970"],["Panama","+507"],["Paraguay","+595"],["Peru","+51"],["Philippines","+63"],["Poland","+48"],["Portugal","+351"],["Puerto Rico","+1-787"],["Qatar","+974"],["Romania","+40"],["Russia","+7"],["Rwanda","+250"],["Saudi Arabia","+966"],["Senegal","+221"],["Serbia","+381"],["Singapore","+65"],["Slovakia","+421"],["Slovenia","+386"],["South Africa","+27"],["South Korea","+82"],["Spain","+34"],["Sri Lanka","+94"],["Sweden","+46"],["Switzerland","+41"],["Taiwan","+886"],["Tanzania","+255"],["Thailand","+66"],["Tunisia","+216"],["Turkey","+90"],["Uganda","+256"],["Ukraine","+380"],["United Arab Emirates","+971"],["United Kingdom","+44"],["United States","+1"],["Uruguay","+598"],["Uzbekistan","+998"],["Venezuela","+58"],["Vietnam","+84"],["Yemen","+967"],["Zambia","+260"],["Zimbabwe","+263"]];
+
+const BAG_TYPES = [
+  {id:'backpack',name:'Backpack / small',icon:'ti-backpack',dayRate:6,hourRate:3},
+  {id:'carryon',name:'Standard carry-on',icon:'ti-luggage',dayRate:8,hourRate:3},
+  {id:'checkin',name:'Check-in / large',icon:'ti-luggage',dayRate:11,hourRate:3.5},
+  {id:'oversized',name:'Oversized',icon:'ti-box',dayRate:14,hourRate:4},
+  {id:'irregular',name:'Irregular item',icon:'ti-camera',dayRate:10,hourRate:4},
+];
+
+const OPEN_HOUR=9, CLOSE_HOUR=22;
+let selectedBags={};
+const today=new Date().toISOString().split('T')[0];
+
+function buildTimeSlots(){const s=[];for(let h=OPEN_HOUR;h<=CLOSE_HOUR;h++){s.push(`${String(h).padStart(2,'0')}:00`);if(h<CLOSE_HOUR)s.push(`${String(h).padStart(2,'0')}:30`);}return s;}
+function formatTime(t){const[h,m]=t.split(':').map(Number);return `${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
+function populateTimeSelect(id,def){const s=document.getElementById(id);s.innerHTML='';buildTimeSlots().forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=formatTime(t);if(t===def)o.selected=true;s.appendChild(o);});}
+
+function calcPricing(){
+  const d1=document.getElementById('dropoff-date').value,d2=document.getElementById('pickup-date').value;
+  const t1=document.getElementById('dropoff-time').value,t2=document.getElementById('pickup-time').value;
+  if(!d1||!d2||!t1||!t2)return null;
+  const dt1=new Date(`${d1}T${t1}`),dt2=new Date(`${d2}T${t2}`);
+  const diffMs=dt2-dt1;if(diffMs<=0)return null;
+  const diffHours=diffMs/(1000*60*60),sameDay=d1===d2;
+  const diffDays=Math.ceil((new Date(d2)-new Date(d1))/86400000)+1;
+  let mode,multiplier;
+  if(sameDay&&diffHours<3){mode='hourly';multiplier=diffHours;}
+  else if(sameDay){mode='daily';multiplier=1;}
+  else{mode='multiday';multiplier=diffDays;}
+  return{mode,multiplier,diffHours:diffHours.toFixed(1),diffDays:multiplier};
+}
+
+function calcTotal(){
+  const p=calcPricing();if(!p||!Object.keys(selectedBags).length)return 0;
+  let t=0;
+  for(const[id,qty]of Object.entries(selectedBags)){const b=BAG_TYPES.find(x=>x.id===id);t+=p.mode==='hourly'?Math.min(b.hourRate*parseFloat(p.diffHours),b.dayRate)*qty:b.dayRate*p.diffDays*qty;}
+  return t;
+}
+
+function onTimeChange(){
+  const d1=document.getElementById('dropoff-date').value,d2=document.getElementById('pickup-date').value;
+  const t1=document.getElementById('dropoff-time').value,t2=document.getElementById('pickup-time').value;
+  const warn=document.getElementById('time-warning'),badge=document.getElementById('pricing-mode-badge');
+  if(d2<d1||(d1===d2&&t2<=t1)){warn.style.display='block';badge.innerHTML='';updateSummary();return;}
+  warn.style.display='none';
+  const p=calcPricing();
+  if(p){if(p.mode==='hourly')badge.innerHTML=`<span class="pricing-badge badge-hourly"><i class="ti ti-clock"></i> Hourly — ${p.diffHours} hrs</span>`;
+  else if(p.mode==='daily')badge.innerHTML=`<span class="pricing-badge badge-daily"><i class="ti ti-sun"></i> Full day rate</span>`;
+  else badge.innerHTML=`<span class="pricing-badge badge-multiday"><i class="ti ti-calendar"></i> ${p.diffDays} day rate</span>`;}
+  else badge.innerHTML='';
+  renderBagGrid();updateSummary();
+}
+
+function updateSummary(){
+  const p=calcPricing(),total=calcTotal();
+  const bagDesc=Object.entries(selectedBags).map(([id,qty])=>{const b=BAG_TYPES.find(x=>x.id===id);return `${qty}× ${b.name}`;}).join(', ')||'—';
+  document.getElementById('sum-bags').textContent=bagDesc;
+  if(p){if(p.mode==='hourly'){document.getElementById('sum-duration').textContent=`${p.diffHours} hours`;document.getElementById('sum-mode').textContent='Hourly rate';}
+  else if(p.mode==='daily'){document.getElementById('sum-duration').textContent='1 day';document.getElementById('sum-mode').textContent='Full day rate';}
+  else{document.getElementById('sum-duration').textContent=`${p.diffDays} days`;document.getElementById('sum-mode').textContent='Full day rate × days';}}
+  else{document.getElementById('sum-duration').textContent='—';document.getElementById('sum-mode').textContent='—';}
+  document.getElementById('sum-total').textContent=`$${total.toFixed(2)}`;
+}
+
+function renderBagGrid(){
+  const p=calcPricing();
+  document.getElementById('bag-grid').innerHTML=BAG_TYPES.map(b=>{
+    const pl=p&&p.mode==='hourly'?`$${b.hourRate}/hr · $${b.dayRate}/day`:`$${b.dayRate}/day · $${b.hourRate}/hr`;
+    return `<div class="bag-option ${selectedBags[b.id]?'selected':''}" onclick="toggleBag('${b.id}')">
+      <div class="bag-icon"><i class="ti ${b.icon}"></i></div>
+      <div class="bag-name">${b.name}</div><div class="bag-price">${pl}</div>
+      ${selectedBags[b.id]?`<div class="qty-row" onclick="event.stopPropagation()">
+        <button class="qty-btn" onclick="changeQty('${b.id}',-1)">−</button>
+        <span class="qty-val">${selectedBags[b.id]}</span>
+        <button class="qty-btn" onclick="changeQty('${b.id}',1)">+</button>
+      </div>`:''}
+    </div>`;}).join('');
+}
+
+function toggleBag(id){if(selectedBags[id])delete selectedBags[id];else selectedBags[id]=1;renderBagGrid();updateSummary();}
+function changeQty(id,delta){selectedBags[id]=Math.max(1,(selectedBags[id]||1)+delta);renderBagGrid();updateSummary();}
+
+function generateId(){return 'TSS-'+Math.floor(1000+Math.random()*9000);}
+
+async function submitBooking(){
+  const fname=document.getElementById('fname').value.trim();
+  const lname=document.getElementById('lname').value.trim();
+  const email=document.getElementById('email').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const cc=document.getElementById('country-code').value;
+  const agreed=document.getElementById('policy-agree').checked;
+  const errDiv=document.getElementById('error-msg');
+  errDiv.style.display='none';
+  if(!fname||!lname||!email){errDiv.textContent='Please fill in your name and email.';errDiv.style.display='block';return;}
+  if(!phone){errDiv.textContent='Please enter your phone number.';errDiv.style.display='block';return;}
+  if(!Object.keys(selectedBags).length){errDiv.textContent='Please select at least one bag type.';errDiv.style.display='block';return;}
+  if(!agreed){errDiv.textContent='Please agree to the late check-out fee policy.';errDiv.style.display='block';return;}
+  const p=calcPricing();
+  if(!p){errDiv.textContent='Please select valid drop-off and pick-up times.';errDiv.style.display='block';return;}
+  const id=generateId();
+  const bagDesc=Object.entries(selectedBags).map(([bid,qty])=>{const b=BAG_TYPES.find(x=>x.id===bid);return `${qty}× ${b.name}`;}).join(', ');
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true;btn.textContent='Saving booking...';
+  const{error}=await supabase.from('bookings').insert([{
+    id,name:`${fname} ${lname}`,email,phone:`${cc} ${phone}`,bags:bagDesc,
+    dropoff:document.getElementById('dropoff-date').value,
+    pickup:document.getElementById('pickup-date').value,
+    dropoff_time:document.getElementById('dropoff-time').value,
+    pickup_time:document.getElementById('pickup-time').value,
+    total:calcTotal(),mode:p.mode,type:'Online',status:'Pending',
+    timeline:[{type:'booked',ts:Date.now(),staff:'Customer (online)',note:''}]
+  }]);
+  if(error){errDiv.textContent='Something went wrong. Please try again.';errDiv.style.display='block';btn.disabled=false;btn.innerHTML='<i class="ti ti-check" style="margin-right:6px;"></i>Confirm booking — pay at store';return;}
+  document.getElementById('confirm-id-display').textContent=id;
+  document.getElementById('confirm-banner').classList.add('show');
+  document.getElementById('confirm-banner').scrollIntoView({behavior:'smooth',block:'nearest'});
+  selectedBags={};renderBagGrid();updateSummary();
+  ['fname','lname','email','phone'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('policy-agree').checked=false;
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-check" style="margin-right:6px;"></i>Confirm booking — pay at store';
+}
+
+function init(){
+  const sel=document.getElementById('country-code');
+  COUNTRIES.forEach(([name,code])=>{const o=document.createElement('option');o.value=code;o.textContent=`${name} (${code})`;if(name==='United States')o.selected=true;sel.appendChild(o);});
+  document.getElementById('dropoff-date').value=today;
+  document.getElementById('pickup-date').value=today;
+  populateTimeSelect('dropoff-time','09:00');
+  populateTimeSelect('pickup-time','11:00');
+  renderBagGrid();onTimeChange();updateSummary();
+}
+init();
+</script>
+</body>
+</html>

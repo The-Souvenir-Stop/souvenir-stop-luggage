@@ -441,6 +441,22 @@ async function submitBooking() {
     errDiv.style.display = 'block';
     btn.disabled = false; btn.textContent = '🎒 Confirm Booking — Pay at Store'; return;
   }
+
+  // Send email notifications
+  try {
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: id, name: fname + ' ' + lname, email: email, phone: cc + ' ' + phone,
+        bags: bagDesc, dropoff: document.getElementById('dropoff-date').value,
+        pickup: document.getElementById('pickup-date').value,
+        dropoff_time: document.getElementById('dropoff-time').value,
+        pickup_time: document.getElementById('pickup-time').value,
+        total: calcTotal(), mode: p.mode
+      })
+    });
+  } catch(e) { console.log('Email notification failed silently', e); }
   document.getElementById('confirm-id-display').textContent = id;
   document.getElementById('confirm-banner').classList.add('show');
   document.getElementById('confirm-banner').scrollIntoView({behavior:'smooth', block:'nearest'});

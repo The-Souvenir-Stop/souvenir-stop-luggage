@@ -14,7 +14,6 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:var(--font);background:var(--color-bg2);color:var(--color-text);min-height:100vh;}
-    /* LOGIN */
     .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
     .login-box{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:2rem;width:320px;text-align:center;}
     .login-title{font-size:18px;font-weight:600;margin-bottom:4px;}
@@ -22,18 +21,16 @@
     .login-box input{width:100%;height:38px;padding:0 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);font-size:14px;font-family:var(--font);margin-bottom:10px;}
     .login-box button{width:100%;padding:11px;background:#1a1a18;color:#fff;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);}
     .login-error{font-size:12px;color:#A32D2D;margin-top:8px;display:none;}
-    /* ADMIN */
     .page{max-width:900px;margin:0 auto;padding:1.5rem 1rem;}
     .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
     .store-name{font-size:18px;font-weight:600;}
     .store-sub{font-size:12px;color:var(--color-text2);margin-top:2px;}
     .logout-btn{font-size:12px;padding:6px 12px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);}
-    .section-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text3);margin-bottom:10px;}
     .card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;}
     .stat-card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-md);padding:12px 14px;}
     .stat-label{font-size:11px;color:var(--color-text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;}
-    .stat-val{font-size:22px;font-weight:600;color:var(--color-text);}
+    .stat-val{font-size:22px;font-weight:600;}
     .stat-sub{font-size:11px;color:var(--color-text3);margin-top:2px;}
     .staff-bar{display:flex;align-items:center;gap:10px;background:var(--color-bg);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:1.5rem;border:0.5px solid var(--color-border);}
     .staff-bar label{font-size:12px;color:var(--color-text2);white-space:nowrap;}
@@ -63,7 +60,7 @@
     .type-tag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;}
     .type-online{background:#E6F1FB;color:#185FA5;}
     .type-walkin{background:#EAF3DE;color:#3B6D11;}
-    .action-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);transition:all 0.12s;font-family:var(--font);}
+    .action-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);font-family:var(--font);}
     .action-btn:hover{background:var(--color-bg2);}
     .wa-btn{font-size:12px;padding:4px 8px;border-radius:var(--radius-md);border:0.5px solid #25D366;background:transparent;cursor:pointer;color:#25D366;margin-left:4px;font-family:var(--font);}
     .wa-btn:hover{background:#EAF3DE;}
@@ -87,7 +84,6 @@
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
 <div id="login-screen" class="login-wrap">
   <div class="login-box">
     <div class="login-title"><i class="ti ti-lock" style="margin-right:6px;"></i>Staff access</div>
@@ -98,7 +94,6 @@
   </div>
 </div>
 
-<!-- ADMIN DASHBOARD -->
 <div id="admin-screen" style="display:none;">
 <div class="page">
   <div class="header">
@@ -164,13 +159,12 @@
 </div>
 </div>
 
-<!-- CHECK-IN MODAL -->
 <div id="checkin-modal" style="display:none;" class="modal-overlay">
   <div class="modal">
     <h3><i class="ti ti-login" style="margin-right:6px;color:#378ADD;"></i>Check in bags</h3>
     <p id="checkin-modal-sub">Booking TSS-0000</p>
     <div style="margin-bottom:12px;">
-      <label>Notes <span style="font-size:11px;color:var(--color-text3);">(optional — bag condition, etc.)</span></label>
+      <label>Notes <span style="font-size:11px;color:var(--color-text3);">(optional)</span></label>
       <textarea id="checkin-note" placeholder="e.g. Small scratch on left side, customer informed"></textarea>
     </div>
     <div class="modal-btns">
@@ -180,7 +174,6 @@
   </div>
 </div>
 
-<!-- CHECK-OUT MODAL -->
 <div id="checkout-modal" style="display:none;" class="modal-overlay">
   <div class="modal">
     <h3><i class="ti ti-logout" style="margin-right:6px;color:#1D9E75;"></i>Check out bags</h3>
@@ -188,195 +181,232 @@
     <div id="checkout-late-fee" style="display:none;background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:12px;line-height:1.5;"></div>
     <div class="modal-btns">
       <button onclick="closeModal()">Cancel</button>
-      <button class="btn-confirm" onclick="confirmCheckout()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirmsb_publishable_jt7_MlpqQuucSlY-o_7X6Q_y20b48S6 check-out</button>
+      <button class="btn-confirm" onclick="confirmCheckout()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-out</button>
     </div>
   </div>
 </div>
 
 <script>
-const SUPABASE_URL='https://fzvjjwsxtfgakgzrblqe.supabase.co';
-const SUPABASE_KEY='sb_publishable_jt7_MlpqQuucSlY-o_7X6Q_y20b48S6';
-const ADMIN_PASSWORD='MemoriesbyTSS!2026';
-const supabase=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+var SURL = 'https://fzvjjwsxtfgakgzrblqe.supabase.co';
+var SKEY = 'sb_publishable_jt7_MlpqQuucSlY-o_7X6Q_y20b48S6';
+var APWD = 'MemoriesbyTSS!2026';
+var client = window.supabase.createClient(SURL, SKEY);
 
-const REMINDER_MINUTES=30;
-let bookings=[],pendingActionId=null;
-const today=new Date().toISOString().split('T')[0];
+var REMINDER_MINUTES = 30;
+var bookings = [];
+var pendingActionId = null;
+var today = new Date().toISOString().split('T')[0];
 
-function checkLogin(){
-  const pw=document.getElementById('login-password').value;
-  if(pw===ADMIN_PASSWORD){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('admin-screen').style.display='block';
+function checkLogin() {
+  var pw = document.getElementById('login-password').value;
+  if (pw === APWD) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
     loadBookings();
   } else {
-    document.getElementById('login-error').style.display='block';
+    document.getElementById('login-error').style.display = 'block';
   }
 }
-function logout(){
-  document.getElementById('admin-screen').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('login-password').value='';
+
+function logout() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-password').value = '';
 }
 
-function formatTime(t){const[h,m]=t.split(':').map(Number);return `${h%12||12}:${String(m).padStart(2,'0')} ${h>=12?'PM':'AM'}`;}
-function formatTs(ts){const d=new Date(ts);return `${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})} ${d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}`;}
-function getInitials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
-function updateStaffAvatar(){const s=document.getElementById('active-staff').value;document.getElementById('staff-avatar').textContent=s?getInitials(s):'?';}
-function updateClock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit'});}
+function formatTime(t) {
+  var parts = t.split(':').map(Number);
+  var h = parts[0], m = parts[1];
+  return (h % 12 || 12) + ':' + (m < 10 ? '0' + m : m) + ' ' + (h >= 12 ? 'PM' : 'AM');
+}
 
-function getBookingStatus(b){
-  if(b.status==='Checked out')return 'Checked out';
-  if(b.status==='Pending')return 'Pending';
-  const now=new Date(),pdt=new Date(`${b.pickup}T${b.pickup_time}`);
-  if(now>=pdt)return 'Overdue';
-  if(now>=new Date(pdt-REMINDER_MINUTES*60000))return 'Due soon';
+function formatTs(ts) {
+  var d = new Date(ts);
+  return d.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
+}
+
+function getInitials(n) {
+  return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+}
+
+function updateStaffAvatar() {
+  var s = document.getElementById('active-staff').value;
+  document.getElementById('staff-avatar').textContent = s ? getInitials(s) : '?';
+}
+
+function updateClock() {
+  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',second:'2-digit'});
+}
+
+function getBookingStatus(b) {
+  if (b.status === 'Checked out') return 'Checked out';
+  if (b.status === 'Pending') return 'Pending';
+  var now = new Date();
+  var pdt = new Date(b.pickup + 'T' + b.pickup_time);
+  if (now >= pdt) return 'Overdue';
+  if (now >= new Date(pdt.getTime() - REMINDER_MINUTES * 60000)) return 'Due soon';
   return 'Stored';
 }
 
-function getActiveStaff(){
-  const s=document.getElementById('active-staff').value;
-  if(!s){alert('Please select the active staff member first.');return null;}
+function getActiveStaff() {
+  var s = document.getElementById('active-staff').value;
+  if (!s) { alert('Please select the active staff member first.'); return null; }
   return s;
 }
 
-async function loadBookings(){
-  const tbody=document.getElementById('booking-tbody');
-  tbody.innerHTML='<tr><td colspan="9" class="no-results">Loading...</td></tr>';
-  const{data,error}=await supabase.from('bookings').select('*').order('created_at',{ascending:false});
-  if(error){tbody.innerHTML='<tr><td colspan="9" class="no-results">Error loading bookings.</td></tr>';return;}
-  bookings=data||[];
-  renderTable();renderAlerts();updateStats();
+async function loadBookings() {
+  var tbody = document.getElementById('booking-tbody');
+  tbody.innerHTML = '<tr><td colspan="9" class="no-results">Loading...</td></tr>';
+  var result = await client.from('bookings').select('*').order('created_at', {ascending: false});
+  if (result.error) {
+    tbody.innerHTML = '<tr><td colspan="9" class="no-results">Error loading bookings. Check your connection.</td></tr>';
+    return;
+  }
+  bookings = result.data || [];
+  renderTable();
+  renderAlerts();
+  updateStats();
 }
 
-function openCheckin(id){
-  if(!getActiveStaff())return;
-  const b=bookings.find(x=>x.id===id);if(!b)return;
-  pendingActionId=id;
-  document.getElementById('checkin-modal-sub').textContent=`${b.id} — ${b.name}`;
-  document.getElementById('checkin-note').value='';
-  document.getElementById('checkin-modal').style.display='flex';
+function openCheckin(id) {
+  if (!getActiveStaff()) return;
+  var b = bookings.find(function(x){return x.id === id;});
+  if (!b) return;
+  pendingActionId = id;
+  document.getElementById('checkin-modal-sub').textContent = b.id + ' — ' + b.name;
+  document.getElementById('checkin-note').value = '';
+  document.getElementById('checkin-modal').style.display = 'flex';
 }
 
-async function confirmCheckin(){
-  const staff=document.getElementById('active-staff').value;
-  const note=document.getElementById('checkin-note').value.trim();
-  const b=bookings.find(x=>x.id===pendingActionId);if(!b)return;
-  const timeline=[...(b.timeline||[]),{type:'checkin',ts:Date.now(),staff,note}];
-  const{error}=await supabase.from('bookings').update({status:'Stored',timeline}).eq('id',b.id);
-  if(!error){b.status='Stored';b.timeline=timeline;}
-  closeModal();renderTable();renderAlerts();updateStats();
+async function confirmCheckin() {
+  var staff = document.getElementById('active-staff').value;
+  var note = document.getElementById('checkin-note').value.trim();
+  var b = bookings.find(function(x){return x.id === pendingActionId;});
+  if (!b) return;
+  var timeline = (b.timeline || []).concat([{type:'checkin', ts:Date.now(), staff:staff, note:note}]);
+  var result = await client.from('bookings').update({status:'Stored', timeline:timeline}).eq('id', b.id);
+  if (!result.error) { b.status = 'Stored'; b.timeline = timeline; }
+  closeModal();
+  renderTable();
+  renderAlerts();
+  updateStats();
 }
 
-function openCheckout(id){
-  if(!getActiveStaff())return;
-  const b=bookings.find(x=>x.id===id);if(!b)return;
-  pendingActionId=id;
-  document.getElementById('checkout-modal-sub').textContent=`${b.id} — ${b.name}`;
-  const ls=getBookingStatus(b);
-  const lf=document.getElementById('checkout-late-fee');
-  if(ls==='Overdue'){
-    const pdt=new Date(`${b.pickup}T${b.pickup_time}`);
-    const hoursLate=Math.max(1,Math.ceil((Date.now()-pdt)/(1000*60*60)));
-    const bagCount=b.bags.match(/(\d+)×/g)?.reduce((a,m)=>a+parseInt(m),0)||1;
-    lf.style.display='block';
-    lf.innerHTML=`<i class="ti ti-alert-circle" style="margin-right:4px;"></i><strong>Late fee applies.</strong> ~${hoursLate} hr${hoursLate>1?'s':''} overdue. Collect additional <strong>$${(hoursLate*3*bagCount).toFixed(2)}</strong> at the counter.`;
-  } else lf.style.display='none';
-  document.getElementById('checkout-modal').style.display='flex';
+function openCheckout(id) {
+  if (!getActiveStaff()) return;
+  var b = bookings.find(function(x){return x.id === id;});
+  if (!b) return;
+  pendingActionId = id;
+  document.getElementById('checkout-modal-sub').textContent = b.id + ' — ' + b.name;
+  var ls = getBookingStatus(b);
+  var lf = document.getElementById('checkout-late-fee');
+  if (ls === 'Overdue') {
+    var pdt = new Date(b.pickup + 'T' + b.pickup_time);
+    var hoursLate = Math.max(1, Math.ceil((Date.now() - pdt.getTime()) / (1000 * 60 * 60)));
+    var bagCount = (b.bags.match(/(\d+)x/gi) || []).reduce(function(a,m){return a + parseInt(m);}, 0) || 1;
+    lf.style.display = 'block';
+    lf.innerHTML = '<i class="ti ti-alert-circle" style="margin-right:4px;"></i><strong>Late fee applies.</strong> ~' + hoursLate + ' hr' + (hoursLate > 1 ? 's' : '') + ' overdue. Collect additional <strong>$' + (hoursLate * 3 * bagCount).toFixed(2) + '</strong> at the counter.';
+  } else {
+    lf.style.display = 'none';
+  }
+  document.getElementById('checkout-modal').style.display = 'flex';
 }
 
-async function confirmCheckout(){
-  const staff=document.getElementById('active-staff').value;
-  const b=bookings.find(x=>x.id===pendingActionId);if(!b)return;
-  const ls=getBookingStatus(b);
-  const timeline=[...(b.timeline||[]),{type:'checkout',ts:Date.now(),staff,note:ls==='Overdue'?'Late — fee applied':'On time'}];
-  const{error}=await supabase.from('bookings').update({status:'Checked out',timeline}).eq('id',b.id);
-  if(!error){b.status='Checked out';b.timeline=timeline;}
-  closeModal();renderTable();renderAlerts();updateStats();
+async function confirmCheckout() {
+  var staff = document.getElementById('active-staff').value;
+  var b = bookings.find(function(x){return x.id === pendingActionId;});
+  if (!b) return;
+  var ls = getBookingStatus(b);
+  var timeline = (b.timeline || []).concat([{type:'checkout', ts:Date.now(), staff:staff, note:ls === 'Overdue' ? 'Late — fee applied' : 'On time'}]);
+  var result = await client.from('bookings').update({status:'Checked out', timeline:timeline}).eq('id', b.id);
+  if (!result.error) { b.status = 'Checked out'; b.timeline = timeline; }
+  closeModal();
+  renderTable();
+  renderAlerts();
+  updateStats();
 }
 
-function closeModal(){
-  document.getElementById('checkin-modal').style.display='none';
-  document.getElementById('checkout-modal').style.display='none';
-  pendingActionId=null;
+function closeModal() {
+  document.getElementById('checkin-modal').style.display = 'none';
+  document.getElementById('checkout-modal').style.display = 'none';
+  pendingActionId = null;
 }
 
-function buildWA(phone,msg){return `https://wa.me/${phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(msg)}`;}
+function buildWA(phone, msg) {
+  return 'https://wa.me/' + phone.replace(/[^0-9]/g,'') + '?text=' + encodeURIComponent(msg);
+}
 
-function renderAlerts(){
-  const c=document.getElementById('admin-alerts');
-  const ov=bookings.filter(b=>b.status!=='Checked out'&&getBookingStatus(b)==='Overdue');
-  const re=bookings.filter(b=>b.status==='Stored'&&getBookingStatus(b)==='Due soon');
-  let html='';
-  ov.forEach(b=>{
-    const msg=`Hi ${b.name.split(' ')[0]}, this is The Souvenir Stop. Your bags (${b.id}) were due at ${formatTime(b.pickup_time)} and are now overdue. Late fees are being applied. Please collect your bags or contact us via WhatsApp.`;
-    html+=`<div class="alert-banner alert-overdue"><i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i><span><strong>${b.name}</strong> (${b.id}) — overdue since ${formatTime(b.pickup_time)}</span><a href="${buildWA(b.phone,msg)}" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Alert</button></a></div>`;
+function renderAlerts() {
+  var c = document.getElementById('admin-alerts');
+  var ov = bookings.filter(function(b){return b.status !== 'Checked out' && getBookingStatus(b) === 'Overdue';});
+  var re = bookings.filter(function(b){return b.status === 'Stored' && getBookingStatus(b) === 'Due soon';});
+  var html = '';
+  ov.forEach(function(b) {
+    var msg = 'Hi ' + b.name.split(' ')[0] + ', this is The Souvenir Stop. Your bags (' + b.id + ') were due at ' + formatTime(b.pickup_time) + ' and are now overdue. Late fees are being applied. Please collect your bags or contact us via WhatsApp.';
+    html += '<div class="alert-banner alert-overdue"><i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i><span><strong>' + b.name + '</strong> (' + b.id + ') — overdue since ' + formatTime(b.pickup_time) + '</span><a href="' + buildWA(b.phone, msg) + '" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Alert</button></a></div>';
   });
-  re.forEach(b=>{
-    const msg=`Hi ${b.name.split(' ')[0]}, just a reminder from The Souvenir Stop — your bags (${b.id}) are due for pick-up at ${formatTime(b.pickup_time)}. See you soon! If running late, please let us know in advance.`;
-    html+=`<div class="alert-banner alert-reminder"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0;"></i><span><strong>${b.name}</strong> (${b.id}) — pick-up at ${formatTime(b.pickup_time)} (~30 min)</span><a href="${buildWA(b.phone,msg)}" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Remind</button></a></div>`;
+  re.forEach(function(b) {
+    var msg = 'Hi ' + b.name.split(' ')[0] + ', just a reminder from The Souvenir Stop — your bags (' + b.id + ') are due for pick-up at ' + formatTime(b.pickup_time) + '. See you soon! If running late, please let us know in advance.';
+    html += '<div class="alert-banner alert-reminder"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0;"></i><span><strong>' + b.name + '</strong> (' + b.id + ') — pick-up at ' + formatTime(b.pickup_time) + ' (~30 min)</span><a href="' + buildWA(b.phone, msg) + '" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Remind</button></a></div>';
   });
-  c.innerHTML=html;
+  c.innerHTML = html;
 }
 
-function renderTimeline(tl){
-  if(!tl||!tl.length)return '';
-  const icons={booked:'dot-booked',checkin:'dot-checkin',checkout:'dot-checkout'};
-  const labels={booked:'Booked',checkin:'Checked in',checkout:'Checked out'};
-  return '<div class="timeline">'+tl.map(e=>`<div class="timeline-item"><div class="timeline-dot ${icons[e.type]||'dot-booked'}"></div><div><span style="color:var(--color-text);font-weight:500;">${labels[e.type]||e.type}</span> · ${e.staff} · ${formatTs(e.ts)}${e.note?` <span style="color:var(--color-text3);">— ${e.note}</span>`:''}</div></div>`).join('')+'</div>';
+function renderTimeline(tl) {
+  if (!tl || !tl.length) return '';
+  var icons = {booked:'dot-booked', checkin:'dot-checkin', checkout:'dot-checkout'};
+  var labels = {booked:'Booked', checkin:'Checked in', checkout:'Checked out'};
+  return '<div class="timeline">' + tl.map(function(e){
+    return '<div class="timeline-item"><div class="timeline-dot ' + (icons[e.type] || 'dot-booked') + '"></div><div><span style="color:var(--color-text);font-weight:500;">' + (labels[e.type] || e.type) + '</span> · ' + e.staff + ' · ' + formatTs(e.ts) + (e.note ? ' <span style="color:var(--color-text3);">— ' + e.note + '</span>' : '') + '</div></div>';
+  }).join('') + '</div>';
 }
 
-function renderTable(){
-  const tf=document.getElementById('filter-type').value;
-  const stf=document.getElementById('filter-status').value;
-  const df=document.getElementById('filter-date').value;
-  const filtered=bookings.filter(b=>{
-    const ls=getBookingStatus(b);
-    if(tf&&b.type!==tf)return false;
-    if(stf&&ls!==stf)return false;
-    if(df&&b.dropoff!==df)return false;
+function renderTable() {
+  var tf = document.getElementById('filter-type').value;
+  var stf = document.getElementById('filter-status').value;
+  var df = document.getElementById('filter-date').value;
+  var filtered = bookings.filter(function(b) {
+    var ls = getBookingStatus(b);
+    if (tf && b.type !== tf) return false;
+    if (stf && ls !== stf) return false;
+    if (df && b.dropoff !== df) return false;
     return true;
   });
-  const tbody=document.getElementById('booking-tbody');
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="no-results"><i class="ti ti-inbox" style="font-size:22px;display:block;margin-bottom:6px;"></i>No bookings found</td></tr>`;return;}
-  tbody.innerHTML=filtered.map(b=>{
-    const ls=getBookingStatus(b);
-    const stClass={Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon'}[ls]||'status-pending';
-    const rowClass=ls==='Overdue'?'overdue-row':ls==='Due soon'?'reminder-row':'';
-    const typeClass=b.type==='Online'?'type-online':'type-walkin';
-    const modeTag=b.mode==='hourly'?`<span style="font-size:10px;background:#FAEEDA;color:#854F0B;padding:1px 5px;border-radius:8px;margin-left:4px;">hourly</span>`:'';
-    const waMsg=ls==='Overdue'?`Hi ${b.name.split(' ')[0]}, your bags (${b.id}) are overdue. Late fees apply. Please collect them or contact us.`:`Hi ${b.name.split(' ')[0]}, reminder — bags (${b.id}) due at ${formatTime(b.pickup_time)}.`;
-    const waLink=b.phone?`<a href="${buildWA(b.phone,waMsg)}" target="_blank"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i></button></a>`:'';
-    const lastStaff=b.timeline?.length>1?`<div style="font-size:10px;color:var(--color-text3);margin-top:2px;">Last: ${b.timeline[b.timeline.length-1].staff}</div>`:'';
-    const btn=ls==='Pending'?`<button class="action-btn" onclick="openCheckin('${b.id}')"><i class="ti ti-login" style="margin-right:3px;"></i>Check in</button>`:ls==='Checked out'?`<span style="font-size:12px;color:var(--color-text3);">✓ Done</span>`:`<button class="action-btn" onclick="openCheckout('${b.id}')"><i class="ti ti-logout" style="margin-right:3px;"></i>Check out</button>`;
-    return `<tr class="${rowClass}">
-      <td style="font-family:monospace;font-size:12px;">${b.id}</td>
-      <td><div>${b.name}</div><div style="font-size:11px;color:var(--color-text3);">${b.phone||''}</div></td>
-      <td style="font-size:12px;color:var(--color-text2);">${b.bags}</td>
-      <td style="font-size:12px;">${b.dropoff}<br><span style="color:var(--color-text3);">${formatTime(b.dropoff_time)}</span></td>
-      <td style="font-size:12px;">${b.pickup}<br><span style="color:var(--color-text3);">${formatTime(b.pickup_time)}</span></td>
-      <td><span class="type-tag ${typeClass}">${b.type}</span></td>
-      <td style="font-weight:600;">$${Number(b.total).toFixed(2)}${modeTag}</td>
-      <td><span class="status-pill ${stClass}">${ls}</span>${lastStaff}${renderTimeline(b.timeline)}</td>
-      <td style="white-space:nowrap;">${waLink}${btn}</td>
-    </tr>`;
+  var tbody = document.getElementById('booking-tbody');
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="9" class="no-results"><i class="ti ti-inbox" style="font-size:22px;display:block;margin-bottom:6px;"></i>No bookings found</td></tr>';
+    return;
+  }
+  tbody.innerHTML = filtered.map(function(b) {
+    var ls = getBookingStatus(b);
+    var stClass = {Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon'}[ls] || 'status-pending';
+    var rowClass = ls === 'Overdue' ? 'overdue-row' : ls === 'Due soon' ? 'reminder-row' : '';
+    var typeClass = b.type === 'Online' ? 'type-online' : 'type-walkin';
+    var modeTag = b.mode === 'hourly' ? '<span style="font-size:10px;background:#FAEEDA;color:#854F0B;padding:1px 5px;border-radius:8px;margin-left:4px;">hourly</span>' : '';
+    var waMsg = ls === 'Overdue' ? 'Hi ' + b.name.split(' ')[0] + ', your bags (' + b.id + ') are overdue. Late fees apply. Please collect them or contact us.' : 'Hi ' + b.name.split(' ')[0] + ', reminder — bags (' + b.id + ') due at ' + formatTime(b.pickup_time) + '.';
+    var waLink = b.phone ? '<a href="' + buildWA(b.phone, waMsg) + '" target="_blank"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i></button></a>' : '';
+    var lastStaff = b.timeline && b.timeline.length > 1 ? '<div style="font-size:10px;color:var(--color-text3);margin-top:2px;">Last: ' + b.timeline[b.timeline.length-1].staff + '</div>' : '';
+    var btn = ls === 'Pending' ? '<button class="action-btn" onclick="openCheckin(\'' + b.id + '\')"><i class="ti ti-login" style="margin-right:3px;"></i>Check in</button>' : ls === 'Checked out' ? '<span style="font-size:12px;color:var(--color-text3);">Done</span>' : '<button class="action-btn" onclick="openCheckout(\'' + b.id + '\')"><i class="ti ti-logout" style="margin-right:3px;"></i>Check out</button>';
+    return '<tr class="' + rowClass + '"><td style="font-family:monospace;font-size:12px;">' + b.id + '</td><td><div>' + b.name + '</div><div style="font-size:11px;color:var(--color-text3);">' + (b.phone || '') + '</div></td><td style="font-size:12px;color:var(--color-text2);">' + b.bags + '</td><td style="font-size:12px;">' + b.dropoff + '<br><span style="color:var(--color-text3);">' + formatTime(b.dropoff_time) + '</span></td><td style="font-size:12px;">' + b.pickup + '<br><span style="color:var(--color-text3);">' + formatTime(b.pickup_time) + '</span></td><td><span class="type-tag ' + typeClass + '">' + b.type + '</span></td><td style="font-weight:600;">$' + Number(b.total).toFixed(2) + modeTag + '</td><td><span class="status-pill ' + stClass + '">' + ls + '</span>' + lastStaff + renderTimeline(b.timeline) + '</td><td style="white-space:nowrap;">' + waLink + btn + '</td></tr>';
   }).join('');
 }
 
-function updateStats(){
-  const todayB=bookings.filter(b=>b.dropoff===today);
-  document.getElementById('stat-today').textContent=todayB.length;
-  document.getElementById('stat-stored').textContent=bookings.filter(b=>b.status==='Stored').length;
-  document.getElementById('stat-overdue').textContent=bookings.filter(b=>b.status!=='Checked out'&&getBookingStatus(b)==='Overdue').length;
-  document.getElementById('stat-revenue').textContent=`$${Math.round(todayB.reduce((a,b)=>a+Number(b.total),0))}`;
+function updateStats() {
+  var todayB = bookings.filter(function(b){return b.dropoff === today;});
+  document.getElementById('stat-today').textContent = todayB.length;
+  document.getElementById('stat-stored').textContent = bookings.filter(function(b){return b.status === 'Stored';}).length;
+  document.getElementById('stat-overdue').textContent = bookings.filter(function(b){return b.status !== 'Checked out' && getBookingStatus(b) === 'Overdue';}).length;
+  document.getElementById('stat-revenue').textContent = '$' + Math.round(todayB.reduce(function(a,b){return a + Number(b.total);}, 0));
 }
 
-function init(){
-  document.getElementById('filter-date').value=today;
-  updateClock();setInterval(updateClock,1000);
-  setInterval(()=>{if(document.getElementById('admin-screen').style.display!=='none'){renderTable();renderAlerts();updateStats();}},30000);
-}
-init();
+document.getElementById('filter-date').value = today;
+updateClock();
+setInterval(updateClock, 1000);
+setInterval(function(){
+  if (document.getElementById('admin-screen').style.display !== 'none') {
+    renderTable(); renderAlerts(); updateStats();
+  }
+}, 30000);
 </script>
 </body>
 </html>

@@ -57,6 +57,11 @@
     .status-pending{background:#FAEEDA;color:#854F0B;}
     .status-overdue{background:#FCEBEB;color:#A32D2D;}
     .status-duesoon{background:#FAEEDA;color:#854F0B;}
+    .status-cancelled{background:#F0F0EE;color:#888780;}
+    .booking-table tr.cancelled-row{opacity:0.5;}
+    .cancel-btn{font-size:12px;padding:4px 8px;border-radius:var(--radius-md);border:0.5px solid #FFCDD2;background:transparent;cursor:pointer;color:#A32D2D;margin-left:4px;font-family:var(--font);}
+    .cancel-btn:hover{background:#FCEBEB;}
+    .show-cancelled-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--color-text2);}
     .type-tag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;}
     .type-online{background:#E6F1FB;color:#185FA5;}
     .type-walkin{background:#EAF3DE;color:#3B6D11;}
@@ -145,9 +150,15 @@
     </select>
   </div>
 
+  <div class="show-cancelled-row">
+    <input type="checkbox" id="show-cancelled" onchange="renderTable()" />
+    <label for="show-cancelled">Show cancelled bookings</label>
+  </div>
+
   <div class="legend-row">
     <div class="legend-item"><div class="legend-dot" style="background:#F09595;"></div>Overdue</div>
     <div class="legend-item"><div class="legend-dot" style="background:#FAC775;"></div>Pick-up in 30 min</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ccc;"></div>Cancelled</div>
   </div>
 
   <div class="card" style="padding:0;overflow:hidden;">
@@ -182,6 +193,19 @@
     <div class="modal-btns">
       <button onclick="closeModal()">Cancel</button>
       <button class="btn-confirm" onclick="confirmCheckout()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-out</button>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL MODAL -->
+<div id="cancel-modal" style="display:none;" class="modal-overlay">
+  <div class="modal">
+    <h3><i class="ti ti-x" style="margin-right:6px;color:#A32D2D;"></i>Cancel booking</h3>
+    <p id="cancel-modal-sub">Are you sure you want to cancel this booking?</p>
+    <div style="background:#FFF5F5;border:0.5px solid #FFCDD2;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:4px;">This will mark the booking as cancelled. It won't be deleted — you can show it again using "Show cancelled bookings."</div>
+    <div class="modal-btns">
+      <button onclick="closeModal()">Go back</button>
+      <button style="flex:1;padding:9px;border-radius:var(--radius-md);font-size:13px;font-weight:500;cursor:pointer;border:none;background:#A32D2D;color:#fff;font-family:var(--font);" onclick="confirmCancel()"><i class="ti ti-x" style="margin-right:4px;"></i>Yes, cancel booking</button>
     </div>
   </div>
 </div>
@@ -329,7 +353,30 @@ async function confirmCheckout() {
 function closeModal() {
   document.getElementById('checkin-modal').style.display = 'none';
   document.getElementById('checkout-modal').style.display = 'none';
+  document.getElementById('cancel-modal').style.display = 'none';
   pendingActionId = null;
+}
+
+function openCancel(id) {
+  if (!getActiveStaff()) return;
+  var b = bookings.find(function(x){return x.id === id;});
+  if (!b) return;
+  pendingActionId = id;
+  document.getElementById('cancel-modal-sub').textContent = 'Cancel booking ' + b.id + ' for ' + b.name + '?';
+  document.getElementById('cancel-modal').style.display = 'flex';
+}
+
+async function confirmCancel() {
+  var staff = document.getElementById('active-staff').value;
+  var b = bookings.find(function(x){return x.id === pendingActionId;});
+  if (!b) return;
+  var timeline = (b.timeline || []).concat([{type:'cancelled', ts:Date.now(), staff:staff, note:'Booking cancelled'}]);
+  var result = await client.from('bookings').update({status:'Cancelled', timeline:timeline}).eq('id', b.id);
+  if (!result.error) { b.status = 'Cancelled'; b.timeline = timeline; }
+  closeModal();
+  renderTable();
+  renderAlerts();
+  updateStats();
 }
 
 function buildWA(phone, msg) {
@@ -365,8 +412,10 @@ function renderTable() {
   var tf = document.getElementById('filter-type').value;
   var stf = document.getElementById('filter-status').value;
   var df = document.getElementById('filter-date').value;
+  var showCancelled = document.getElementById('show-cancelled').checked;
   var filtered = bookings.filter(function(b) {
     var ls = getBookingStatus(b);
+    if (b.status === 'Cancelled' && !showCancelled) return false;
     if (tf && b.type !== tf) return false;
     if (stf && ls !== stf) return false;
     if (df && b.dropoff !== df) return false;
@@ -379,23 +428,26 @@ function renderTable() {
   }
   tbody.innerHTML = filtered.map(function(b) {
     var ls = getBookingStatus(b);
-    var stClass = {Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon'}[ls] || 'status-pending';
-    var rowClass = ls === 'Overdue' ? 'overdue-row' : ls === 'Due soon' ? 'reminder-row' : '';
+    var isCancelled = b.status === 'Cancelled';
+    var stClass = {Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon',Cancelled:'status-cancelled'}[ls] || 'status-pending';
+    if (isCancelled) stClass = 'status-cancelled';
+    var rowClass = isCancelled ? 'cancelled-row' : ls === 'Overdue' ? 'overdue-row' : ls === 'Due soon' ? 'reminder-row' : '';
     var typeClass = b.type === 'Online' ? 'type-online' : 'type-walkin';
     var modeTag = b.mode === 'hourly' ? '<span style="font-size:10px;background:#FAEEDA;color:#854F0B;padding:1px 5px;border-radius:8px;margin-left:4px;">hourly</span>' : '';
     var waMsg = ls === 'Overdue' ? 'Hi ' + b.name.split(' ')[0] + ', your bags (' + b.id + ') are overdue. Late fees apply. Please collect them or contact us.' : 'Hi ' + b.name.split(' ')[0] + ', reminder — bags (' + b.id + ') due at ' + formatTime(b.pickup_time) + '.';
-    var waLink = b.phone ? '<a href="' + buildWA(b.phone, waMsg) + '" target="_blank"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i></button></a>' : '';
+    var waLink = b.phone && !isCancelled ? '<a href="' + buildWA(b.phone, waMsg) + '" target="_blank"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i></button></a>' : '';
     var lastStaff = b.timeline && b.timeline.length > 1 ? '<div style="font-size:10px;color:var(--color-text3);margin-top:2px;">Last: ' + b.timeline[b.timeline.length-1].staff + '</div>' : '';
-    var btn = ls === 'Pending' ? '<button class="action-btn" onclick="openCheckin(\'' + b.id + '\')"><i class="ti ti-login" style="margin-right:3px;"></i>Check in</button>' : ls === 'Checked out' ? '<span style="font-size:12px;color:var(--color-text3);">Done</span>' : '<button class="action-btn" onclick="openCheckout(\'' + b.id + '\')"><i class="ti ti-logout" style="margin-right:3px;"></i>Check out</button>';
-    return '<tr class="' + rowClass + '"><td style="font-family:monospace;font-size:12px;">' + b.id + '</td><td><div>' + b.name + '</div><div style="font-size:11px;color:var(--color-text3);">' + (b.phone || '') + '</div></td><td style="font-size:12px;color:var(--color-text2);">' + b.bags + '</td><td style="font-size:12px;">' + b.dropoff + '<br><span style="color:var(--color-text3);">' + formatTime(b.dropoff_time) + '</span></td><td style="font-size:12px;">' + b.pickup + '<br><span style="color:var(--color-text3);">' + formatTime(b.pickup_time) + '</span></td><td><span class="type-tag ' + typeClass + '">' + b.type + '</span></td><td style="font-weight:600;">$' + Number(b.total).toFixed(2) + modeTag + '</td><td><span class="status-pill ' + stClass + '">' + ls + '</span>' + lastStaff + renderTimeline(b.timeline) + '</td><td style="white-space:nowrap;">' + waLink + btn + '</td></tr>';
+    var cancelBtn = !isCancelled && ls !== 'Checked out' ? '<button class="cancel-btn" onclick="openCancel(\'' + b.id + '\')" title="Cancel booking"><i class="ti ti-x"></i></button>' : '';
+    var btn = isCancelled ? '<span style="font-size:12px;color:var(--color-text3);">Cancelled</span>' : ls === 'Pending' ? '<button class="action-btn" onclick="openCheckin(\'' + b.id + '\')"><i class="ti ti-login" style="margin-right:3px;"></i>Check in</button>' : ls === 'Checked out' ? '<span style="font-size:12px;color:var(--color-text3);">✓ Done</span>' : '<button class="action-btn" onclick="openCheckout(\'' + b.id + '\')"><i class="ti ti-logout" style="margin-right:3px;"></i>Check out</button>';
+    return '<tr class="' + rowClass + '"><td style="font-family:monospace;font-size:12px;">' + b.id + '</td><td><div>' + b.name + '</div><div style="font-size:11px;color:var(--color-text3);">' + (b.phone || '') + '</div></td><td style="font-size:12px;color:var(--color-text2);">' + b.bags + '</td><td style="font-size:12px;">' + b.dropoff + '<br><span style="color:var(--color-text3);">' + formatTime(b.dropoff_time) + '</span></td><td style="font-size:12px;">' + b.pickup + '<br><span style="color:var(--color-text3);">' + formatTime(b.pickup_time) + '</span></td><td><span class="type-tag ' + typeClass + '">' + (b.type || 'Online') + '</span></td><td style="font-weight:600;">$' + Number(b.total).toFixed(2) + modeTag + '</td><td><span class="status-pill ' + stClass + '">' + (isCancelled ? 'Cancelled' : ls) + '</span>' + lastStaff + renderTimeline(b.timeline) + '</td><td style="white-space:nowrap;">' + waLink + btn + cancelBtn + '</td></tr>';
   }).join('');
 }
 
 function updateStats() {
-  var todayB = bookings.filter(function(b){return b.dropoff === today;});
+  var todayB = bookings.filter(function(b){return b.dropoff === today && b.status !== 'Cancelled';});
   document.getElementById('stat-today').textContent = todayB.length;
   document.getElementById('stat-stored').textContent = bookings.filter(function(b){return b.status === 'Stored';}).length;
-  document.getElementById('stat-overdue').textContent = bookings.filter(function(b){return b.status !== 'Checked out' && getBookingStatus(b) === 'Overdue';}).length;
+  document.getElementById('stat-overdue').textContent = bookings.filter(function(b){return b.status !== 'Checked out' && b.status !== 'Cancelled' && getBookingStatus(b) === 'Overdue';}).length;
   document.getElementById('stat-revenue').textContent = '$' + Math.round(todayB.reduce(function(a,b){return a + Number(b.total);}, 0));
 }
 

@@ -434,7 +434,7 @@ async function submitBooking() {
     dropoff_time: document.getElementById('dropoff-time').value,
     pickup_time: document.getElementById('pickup-time').value,
     total: calcTotal(), mode: p.mode, type: 'Online', status: 'Pending',
-    timeline: [{type:'booked', ts:Date.now(), staff:'Customer (online)', note:''}]
+    created_at: new Date().toISOString()
   }]);
   if (result.error) {
     errDiv.textContent = 'Something went wrong. Please try again.';

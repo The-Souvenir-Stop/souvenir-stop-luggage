@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Admin — The Souvenir Stop</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -14,101 +14,162 @@
     }
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:var(--font);background:var(--color-bg2);color:var(--color-text);min-height:100vh;}
-    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;}
-    .login-box{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:2rem;width:320px;text-align:center;}
-    .login-title{font-size:18px;font-weight:600;margin-bottom:4px;}
+
+    /* LOGIN */
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;}
+    .login-box{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:2rem;width:100%;max-width:340px;text-align:center;}
+    .login-logo{font-size:16px;font-weight:900;letter-spacing:0.05em;margin-bottom:4px;}
+    .login-title{font-size:15px;font-weight:600;margin-bottom:4px;}
     .login-sub{font-size:13px;color:var(--color-text2);margin-bottom:1.5rem;}
-    .login-box input{width:100%;height:38px;padding:0 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);font-size:14px;font-family:var(--font);margin-bottom:10px;}
-    .login-box button{width:100%;padding:11px;background:#1a1a18;color:#fff;border:none;border-radius:var(--radius-md);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);}
+    .login-box input{width:100%;height:44px;padding:0 12px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);font-size:16px;font-family:var(--font);margin-bottom:10px;}
+    .login-box button{width:100%;padding:13px;background:#1a1a18;color:#fff;border:none;border-radius:var(--radius-md);font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);}
     .login-error{font-size:12px;color:#A32D2D;margin-top:8px;display:none;}
-    .page{max-width:900px;margin:0 auto;padding:1.5rem 1rem;}
-    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-    .store-name{font-size:18px;font-weight:600;}
-    .store-sub{font-size:12px;color:var(--color-text2);margin-top:2px;}
-    .logout-btn{font-size:12px;padding:6px 12px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);}
-    .card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1rem;}
-    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem;}
-    .stat-card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-md);padding:12px 14px;}
-    .stat-label{font-size:11px;color:var(--color-text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.06em;}
-    .stat-val{font-size:22px;font-weight:600;}
-    .stat-sub{font-size:11px;color:var(--color-text3);margin-top:2px;}
-    .staff-bar{display:flex;align-items:center;gap:10px;background:var(--color-bg);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:1.5rem;border:0.5px solid var(--color-border);}
+    .role-badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;margin-bottom:1rem;}
+    .role-owner{background:#E3F0FF;color:#185FA5;}
+    .role-associate{background:#EAF3DE;color:#3B6D11;}
+
+    /* SHARED */
+    .page{max-width:900px;margin:0 auto;padding:1rem;}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;gap:8px;}
+    .header-left{flex:1;min-width:0;}
+    .store-name{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .store-sub{font-size:11px;color:var(--color-text2);margin-top:2px;}
+    .header-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+    .logout-btn{font-size:12px;padding:6px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);}
+    .clock{font-size:11px;color:var(--color-text3);}
+
+    /* SEARCH BAR */
+    .search-wrap{position:relative;margin-bottom:1rem;}
+    .search-input{width:100%;height:48px;padding:0 16px 0 44px;border-radius:14px;border:2px solid var(--color-border);background:var(--color-bg);color:var(--color-text);font-size:16px;font-family:var(--font);transition:border-color 0.15s;}
+    .search-input:focus{outline:none;border-color:#388dec;}
+    .search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--color-text3);font-size:20px;pointer-events:none;}
+    .search-clear{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:var(--color-text3);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:14px;display:none;align-items:center;justify-content:center;}
+
+    /* STAFF BAR */
+    .staff-bar{display:flex;align-items:center;gap:10px;background:var(--color-bg);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:1rem;border:0.5px solid var(--color-border);}
     .staff-bar label{font-size:12px;color:var(--color-text2);white-space:nowrap;}
-    .staff-bar select{height:32px;padding:0 8px;font-size:13px;font-weight:500;border:0.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);flex:1;font-family:var(--font);}
-    .staff-avatar{width:32px;height:32px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#185FA5;flex-shrink:0;}
-    .alert-banner{border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px;font-size:12px;display:flex;align-items:center;gap:8px;}
+    .staff-bar select{height:36px;padding:0 8px;font-size:14px;font-weight:500;border:0.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);flex:1;font-family:var(--font);}
+    .staff-avatar{width:34px;height:34px;border-radius:50%;background:#E6F1FB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#185FA5;flex-shrink:0;}
+
+    /* STATS - owner only */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem;}
+    .stat-card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:var(--radius-md);padding:10px 12px;}
+    .stat-label{font-size:10px;color:var(--color-text2);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em;}
+    .stat-val{font-size:20px;font-weight:700;}
+    .stat-sub{font-size:10px;color:var(--color-text3);margin-top:1px;}
+
+    /* ALERTS */
+    .alert-banner{border-radius:var(--radius-md);padding:10px 14px;margin-bottom:10px;font-size:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
     .alert-overdue{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F09595;}
     .alert-reminder{background:#FAEEDA;color:#854F0B;border:0.5px solid #FAC775;}
-    .admin-alerts{margin-bottom:1.5rem;}
-    .filter-row{display:flex;gap:8px;margin-bottom:1rem;align-items:center;flex-wrap:wrap;}
-    .filter-select,.date-input{height:32px;padding:0 8px;font-size:12px;border:0.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);font-family:var(--font);}
-    .legend-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+    .admin-alerts{margin-bottom:1rem;}
+
+    /* FILTERS */
+    .filter-row{display:flex;gap:8px;margin-bottom:0.75rem;align-items:center;flex-wrap:wrap;}
+    .filter-select,.date-input{height:36px;padding:0 8px;font-size:13px;border:0.5px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg);color:var(--color-text);font-family:var(--font);}
+    .show-cancelled-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--color-text2);}
+    .legend-row{display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;}
     .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text2);}
-    .legend-dot{width:10px;height:10px;border-radius:50%;}
-    .booking-table{width:100%;border-collapse:collapse;font-size:13px;}
-    .booking-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text3);font-weight:500;padding:8px 10px;border-bottom:0.5px solid var(--color-border);}
-    .booking-table td{padding:10px;border-bottom:0.5px solid var(--color-border);color:var(--color-text);vertical-align:middle;}
-    .booking-table tr:last-child td{border-bottom:none;}
-    .booking-table tr.overdue-row{background:#FCEBEB;}
-    .booking-table tr.reminder-row{background:#FAEEDA;}
-    .status-pill{font-size:11px;font-weight:500;padding:3px 8px;border-radius:20px;}
+    .legend-dot{width:8px;height:8px;border-radius:50%;}
+
+    /* BOOKING CARDS - mobile friendly */
+    .booking-cards{display:flex;flex-direction:column;gap:10px;}
+    .booking-card{background:var(--color-bg);border:0.5px solid var(--color-border);border-radius:14px;padding:14px;transition:all 0.15s;}
+    .booking-card.overdue-card{background:#FCEBEB;border-color:#F09595;}
+    .booking-card.reminder-card{background:#FAEEDA;border-color:#FAC775;}
+    .booking-card.cancelled-card{opacity:0.5;}
+    .card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px;}
+    .card-id{font-family:monospace;font-size:13px;font-weight:700;color:var(--color-text);}
+    .card-name{font-size:15px;font-weight:600;margin-top:2px;}
+    .card-phone{font-size:12px;color:var(--color-text2);margin-top:2px;display:flex;align-items:center;gap:6px;}
+    .card-badges{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+    .card-body{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+    .card-field{background:var(--color-bg2);border-radius:8px;padding:8px 10px;}
+    .card-field-label{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text3);margin-bottom:3px;}
+    .card-field-value{font-size:13px;font-weight:500;color:var(--color-text);}
+    .card-bags{background:var(--color-bg2);border-radius:8px;padding:8px 10px;margin-bottom:10px;}
+    .card-bags-label{font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--color-text3);margin-bottom:3px;}
+    .card-bags-value{font-size:13px;font-weight:500;color:var(--color-text);}
+    .card-total{font-size:14px;font-weight:700;color:#388dec;margin-bottom:12px;}
+    .card-actions{display:flex;gap:8px;}
+
+    /* BIG ACTION BUTTONS */
+    .btn-checkin{flex:1;padding:14px;background:#388dec;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.15s;}
+    .btn-checkin:hover{opacity:0.9;}
+    .btn-checkout{flex:1;padding:14px;background:#2E7D32;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;transition:opacity 0.15s;}
+    .btn-checkout:hover{opacity:0.9;}
+    .btn-wa{padding:14px 16px;background:#25D366;color:#fff;border:none;border-radius:12px;font-size:15px;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;transition:opacity 0.15s;}
+    .btn-wa:hover{opacity:0.9;}
+    .btn-cancel-sm{padding:10px 14px;background:transparent;color:#A32D2D;border:1px solid #FFCDD2;border-radius:10px;font-size:13px;cursor:pointer;font-family:var(--font);}
+    .btn-done{flex:1;padding:14px;background:#EAF3DE;color:#3B6D11;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:6px;}
+
+    /* STATUS PILLS */
+    .status-pill{font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;}
     .status-stored{background:#E6F1FB;color:#185FA5;}
     .status-checkedout{background:#EAF3DE;color:#3B6D11;}
     .status-pending{background:#FAEEDA;color:#854F0B;}
     .status-overdue{background:#FCEBEB;color:#A32D2D;}
     .status-duesoon{background:#FAEEDA;color:#854F0B;}
     .status-cancelled{background:#F0F0EE;color:#888780;}
-    .booking-table tr.cancelled-row{opacity:0.5;}
-    .cancel-btn{font-size:12px;padding:4px 8px;border-radius:var(--radius-md);border:0.5px solid #FFCDD2;background:transparent;cursor:pointer;color:#A32D2D;margin-left:4px;font-family:var(--font);}
-    .cancel-btn:hover{background:#FCEBEB;}
-    .show-cancelled-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12px;color:var(--color-text2);}
-    .type-tag{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;}
+    .type-tag{font-size:11px;padding:3px 8px;border-radius:20px;font-weight:600;}
     .type-online{background:#E6F1FB;color:#185FA5;}
     .type-walkin{background:#EAF3DE;color:#3B6D11;}
-    .action-btn{font-size:12px;padding:4px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);font-family:var(--font);}
-    .action-btn:hover{background:var(--color-bg2);}
-    .wa-btn{font-size:12px;padding:4px 8px;border-radius:var(--radius-md);border:0.5px solid #25D366;background:transparent;cursor:pointer;color:#25D366;margin-left:4px;font-family:var(--font);}
-    .wa-btn:hover{background:#EAF3DE;}
-    .no-results{text-align:center;padding:2rem;color:var(--color-text3);font-size:13px;}
-    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:999;}
-    .modal{background:var(--color-bg);border-radius:var(--radius-lg);padding:1.5rem;width:340px;border:0.5px solid var(--color-border);}
-    .modal h3{font-size:15px;font-weight:600;margin-bottom:4px;}
-    .modal p{font-size:12px;color:var(--color-text2);margin-bottom:1rem;}
-    .modal textarea{width:100%;padding:8px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);font-size:13px;font-family:var(--font);resize:vertical;min-height:64px;}
+
+    /* MODALS */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:flex-end;justify-content:center;z-index:999;padding:0;}
+    .modal{background:var(--color-bg);border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:500px;}
+    .modal-handle{width:40px;height:4px;background:var(--color-border);border-radius:2px;margin:0 auto 1rem;}
+    .modal h3{font-size:17px;font-weight:700;margin-bottom:4px;}
+    .modal p{font-size:13px;color:var(--color-text2);margin-bottom:1rem;}
+    .modal textarea{width:100%;padding:10px 12px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);font-size:14px;font-family:var(--font);resize:none;min-height:80px;}
     .modal label{font-size:13px;color:var(--color-text2);display:block;margin-bottom:6px;}
     .modal-btns{display:flex;gap:8px;margin-top:1rem;}
-    .modal-btns button{flex:1;padding:9px;border-radius:var(--radius-md);font-size:13px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border);background:transparent;color:var(--color-text);font-family:var(--font);}
-    .modal-btns .btn-confirm{background:#1a1a18;color:#fff;border-color:transparent;}
-    .timeline{margin-top:8px;}
-    .timeline-item{display:flex;gap:8px;font-size:11px;color:var(--color-text2);padding:3px 0;align-items:flex-start;}
-    .timeline-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-    .dot-booked{background:#888780;}.dot-checkin{background:#378ADD;}.dot-checkout{background:#1D9E75;}
-    .clock{font-size:12px;color:var(--color-text3);}
-    .refresh-btn{font-size:12px;padding:6px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);margin-left:8px;}
+    .modal-btns button{flex:1;padding:13px;border-radius:var(--radius-md);font-size:14px;font-weight:600;cursor:pointer;border:0.5px solid var(--color-border);background:transparent;color:var(--color-text);font-family:var(--font);}
+    .modal-btns .btn-confirm-checkin{background:#388dec;color:#fff;border-color:transparent;}
+    .modal-btns .btn-confirm-checkout{background:#2E7D32;color:#fff;border-color:transparent;}
+    .modal-btns .btn-confirm-cancel{background:#A32D2D;color:#fff;border-color:transparent;}
+    .late-fee-alert{background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:12px;line-height:1.5;}
+    .no-results{text-align:center;padding:3rem 1rem;color:var(--color-text3);font-size:14px;}
+    .refresh-btn{font-size:12px;padding:6px 10px;border-radius:var(--radius-md);border:0.5px solid var(--color-border);background:transparent;cursor:pointer;color:var(--color-text2);}
+
+    /* OWNER-ONLY SOURCE TAG */
+    .src-direct{background:#EAF3DE;color:#3B6D11;}
+    .src-bounce{background:#EEEDFE;color:#534AB7;}
+    .src-luggage{background:#E1F5EE;color:#0F6E56;}
+    .src-radical{background:#FAECE7;color:#993C1D;}
+    .src-stasher{background:#FBEAF0;color:#993556;}
+
+    @media(min-width:600px){
+      .modal{border-radius:20px;margin:auto;}
+      .modal-overlay{align-items:center;}
+    }
   </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen" class="login-wrap">
   <div class="login-box">
-    <div class="login-title"><i class="ti ti-lock" style="margin-right:6px;"></i>Staff access</div>
-    <div class="login-sub">The Souvenir Stop — Admin Dashboard</div>
-    <input type="password" id="login-password" placeholder="Enter password" onkeydown="if(event.key==='Enter')checkLogin()" />
+    <div class="login-logo">🧳 THE SOUVENIR STOP</div>
+    <div class="login-title">Staff Access</div>
+    <div class="login-sub">Enter your password to continue</div>
+    <input type="password" id="login-password" placeholder="Password" onkeydown="if(event.key==='Enter')checkLogin()" />
     <button onclick="checkLogin()">Sign in</button>
     <div id="login-error" class="login-error">Incorrect password. Please try again.</div>
   </div>
 </div>
 
-<div id="admin-screen" style="display:none;">
+<!-- OWNER DASHBOARD -->
+<div id="owner-screen" style="display:none;">
 <div class="page">
   <div class="header">
-    <div>
-      <div class="store-name"><i class="ti ti-layout-dashboard" style="margin-right:8px;"></i>Admin Dashboard</div>
-      <div class="store-sub">The Souvenir Stop · Luggage Storage</div>
+    <div class="header-left">
+      <div class="store-name">🧳 Admin Dashboard</div>
+      <div class="store-sub">The Souvenir Stop · <span class="role-badge role-owner">Owner View</span></div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span class="clock" id="clock"></span>
-      <button class="refresh-btn" onclick="loadBookings()"><i class="ti ti-refresh"></i> Refresh</button>
+    <div class="header-right">
+      <span class="clock" id="owner-clock"></span>
+      <button class="refresh-btn" onclick="loadBookings()"><i class="ti ti-refresh"></i></button>
       <button class="logout-btn" onclick="logout()">Sign out</button>
     </div>
   </div>
@@ -130,69 +191,127 @@
 
   <div class="stats-row">
     <div class="stat-card"><div class="stat-label">Today's bookings</div><div class="stat-val" id="stat-today">0</div><div class="stat-sub">total</div></div>
-    <div class="stat-card"><div class="stat-label">Currently stored</div><div class="stat-val" id="stat-stored">0</div><div class="stat-sub">active</div></div>
-    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-val" id="stat-overdue" style="color:#A32D2D;">0</div><div class="stat-sub">need attention</div></div>
-    <div class="stat-card"><div class="stat-label">Today's revenue</div><div class="stat-val" id="stat-revenue">$0</div><div class="stat-sub">all direct</div></div>
+    <div class="stat-card"><div class="stat-label">Stored</div><div class="stat-val" id="stat-stored">0</div><div class="stat-sub">active</div></div>
+    <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-val" id="stat-overdue" style="color:#A32D2D;">0</div><div class="stat-sub">attention</div></div>
+    <div class="stat-card"><div class="stat-label">Today's revenue</div><div class="stat-val" id="stat-revenue">$0</div><div class="stat-sub">direct</div></div>
   </div>
 
-  <div id="admin-alerts" class="admin-alerts"></div>
+  <div id="owner-alerts" class="admin-alerts"></div>
+
+  <div class="search-wrap">
+    <i class="ti ti-search search-icon"></i>
+    <input type="text" class="search-input" id="owner-search" placeholder="Search by name, ID, or phone..." oninput="renderOwnerBookings()" />
+    <button class="search-clear" id="owner-search-clear" onclick="clearSearch('owner')">×</button>
+  </div>
 
   <div class="filter-row">
-    <input type="date" class="date-input" id="filter-date" onchange="renderTable()" />
-    <select class="filter-select" id="filter-type" onchange="renderTable()">
-      <option value="">Online &amp; walk-ins</option>
-      <option value="Online">Online bookings</option>
-      <option value="Walk-in">Walk-ins</option>
+    <input type="date" class="date-input" id="filter-date" onchange="renderOwnerBookings()" />
+    <select class="filter-select" id="filter-type" onchange="renderOwnerBookings()">
+      <option value="">All types</option>
+      <option value="Online">Online</option>
+      <option value="Walk-in">Walk-in</option>
     </select>
-    <select class="filter-select" id="filter-status" onchange="renderTable()">
+    <select class="filter-select" id="filter-status" onchange="renderOwnerBookings()">
       <option value="">All statuses</option>
-      <option>Pending</option><option>Stored</option><option>Overdue</option><option>Due soon</option><option>Checked out</option>
+      <option>Pending</option><option>Stored</option><option>Overdue</option><option>Checked out</option>
     </select>
   </div>
-
   <div class="show-cancelled-row">
-    <input type="checkbox" id="show-cancelled" onchange="renderTable()" />
+    <input type="checkbox" id="show-cancelled" onchange="renderOwnerBookings()" />
     <label for="show-cancelled">Show cancelled bookings</label>
   </div>
-
   <div class="legend-row">
     <div class="legend-item"><div class="legend-dot" style="background:#F09595;"></div>Overdue</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#FAC775;"></div>Pick-up in 30 min</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#ccc;"></div>Cancelled</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FAC775;"></div>Due in 30 min</div>
   </div>
 
-  <div class="card" style="padding:0;overflow:hidden;">
-    <table class="booking-table">
-      <thead><tr><th>ID</th><th>Customer</th><th>Bags</th><th>Drop-off</th><th>Pick-up</th><th>Type</th><th>Total</th><th>Status / Log</th><th></th></tr></thead>
-      <tbody id="booking-tbody"><tr><td colspan="9" class="no-results">Loading bookings...</td></tr></tbody>
-    </table>
-  </div>
+  <div id="owner-booking-cards" class="booking-cards"></div>
 </div>
 </div>
 
+<!-- ASSOCIATE DASHBOARD -->
+<div id="associate-screen" style="display:none;">
+<div class="page">
+  <div class="header">
+    <div class="header-left">
+      <div class="store-name">🧳 Check-in / Check-out</div>
+      <div class="store-sub">The Souvenir Stop · <span class="role-badge role-associate">Associate View</span></div>
+    </div>
+    <div class="header-right">
+      <span class="clock" id="assoc-clock"></span>
+      <button class="refresh-btn" onclick="loadBookings()"><i class="ti ti-refresh"></i></button>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="staff-bar">
+    <div class="staff-avatar" id="assoc-staff-avatar">?</div>
+    <label>You are:</label>
+    <select id="assoc-active-staff" onchange="updateAssocAvatar()">
+      <option value="">— Select your name —</option>
+      <option>Sonia &amp; Tanya</option>
+      <option>Anchal</option>
+      <option>Krishna</option>
+      <option>Manish</option>
+      <option>Ateif Uncle</option>
+      <option>Associate</option>
+      <option>Dilan</option>
+    </select>
+  </div>
+
+  <div id="assoc-alerts" class="admin-alerts"></div>
+
+  <div class="search-wrap">
+    <i class="ti ti-search search-icon"></i>
+    <input type="text" class="search-input" id="assoc-search" placeholder="Search by name, booking ID..." oninput="renderAssocBookings()" />
+    <button class="search-clear" id="assoc-search-clear" onclick="clearSearch('assoc')">×</button>
+  </div>
+
+  <div class="filter-row">
+    <input type="date" class="date-input" id="assoc-filter-date" onchange="renderAssocBookings()" />
+    <select class="filter-select" id="assoc-filter-status" onchange="renderAssocBookings()">
+      <option value="">All active</option>
+      <option>Pending</option>
+      <option>Stored</option>
+      <option>Overdue</option>
+    </select>
+  </div>
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot" style="background:#F09595;"></div>Overdue</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FAC775;"></div>Due in 30 min</div>
+  </div>
+
+  <div id="assoc-booking-cards" class="booking-cards"></div>
+</div>
+</div>
+
+<!-- CHECK-IN MODAL -->
 <div id="checkin-modal" style="display:none;" class="modal-overlay">
   <div class="modal">
-    <h3><i class="ti ti-login" style="margin-right:6px;color:#378ADD;"></i>Check in bags</h3>
+    <div class="modal-handle"></div>
+    <h3><i class="ti ti-login" style="color:#388dec;margin-right:6px;"></i>Check in bags</h3>
     <p id="checkin-modal-sub">Booking TSS-0000</p>
     <div style="margin-bottom:12px;">
-      <label>Notes <span style="font-size:11px;color:var(--color-text3);">(optional)</span></label>
-      <textarea id="checkin-note" placeholder="e.g. Small scratch on left side, customer informed"></textarea>
+      <label>Condition notes <span style="font-size:11px;color:var(--color-text3);">(optional)</span></label>
+      <textarea id="checkin-note" placeholder="e.g. Small scratch on left side, customer informed" rows="3"></textarea>
     </div>
     <div class="modal-btns">
       <button onclick="closeModal()">Cancel</button>
-      <button class="btn-confirm" onclick="confirmCheckin()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-in</button>
+      <button class="btn-confirm-checkin" onclick="confirmCheckin()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-in</button>
     </div>
   </div>
 </div>
 
+<!-- CHECK-OUT MODAL -->
 <div id="checkout-modal" style="display:none;" class="modal-overlay">
   <div class="modal">
-    <h3><i class="ti ti-logout" style="margin-right:6px;color:#1D9E75;"></i>Check out bags</h3>
+    <div class="modal-handle"></div>
+    <h3><i class="ti ti-logout" style="color:#2E7D32;margin-right:6px;"></i>Check out bags</h3>
     <p id="checkout-modal-sub">Booking TSS-0000</p>
-    <div id="checkout-late-fee" style="display:none;background:#FCEBEB;border:0.5px solid #F09595;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:12px;line-height:1.5;"></div>
+    <div id="checkout-late-fee" style="display:none;" class="late-fee-alert"></div>
     <div class="modal-btns">
       <button onclick="closeModal()">Cancel</button>
-      <button class="btn-confirm" onclick="confirmCheckout()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-out</button>
+      <button class="btn-confirm-checkout" onclick="confirmCheckout()"><i class="ti ti-check" style="margin-right:4px;"></i>Confirm check-out</button>
     </div>
   </div>
 </div>
@@ -200,12 +319,13 @@
 <!-- CANCEL MODAL -->
 <div id="cancel-modal" style="display:none;" class="modal-overlay">
   <div class="modal">
-    <h3><i class="ti ti-x" style="margin-right:6px;color:#A32D2D;"></i>Cancel booking</h3>
-    <p id="cancel-modal-sub">Are you sure you want to cancel this booking?</p>
-    <div style="background:#FFF5F5;border:0.5px solid #FFCDD2;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:4px;">This will mark the booking as cancelled. It won't be deleted — you can show it again using "Show cancelled bookings."</div>
+    <div class="modal-handle"></div>
+    <h3><i class="ti ti-x" style="color:#A32D2D;margin-right:6px;"></i>Cancel booking</h3>
+    <p id="cancel-modal-sub">Are you sure?</p>
+    <div style="background:#FFF5F5;border:0.5px solid #FFCDD2;border-radius:var(--radius-md);padding:10px 12px;font-size:12px;color:#A32D2D;margin-bottom:4px;">This will mark the booking as cancelled. It won't be deleted.</div>
     <div class="modal-btns">
       <button onclick="closeModal()">Go back</button>
-      <button style="flex:1;padding:9px;border-radius:var(--radius-md);font-size:13px;font-weight:500;cursor:pointer;border:none;background:#A32D2D;color:#fff;font-family:var(--font);" onclick="confirmCancel()"><i class="ti ti-x" style="margin-right:4px;"></i>Yes, cancel booking</button>
+      <button class="btn-confirm-cancel" onclick="confirmCancel()"><i class="ti ti-x" style="margin-right:4px;"></i>Yes, cancel</button>
     </div>
   </div>
 </div>
@@ -213,19 +333,24 @@
 <script>
 var SURL = 'https://fzvjjwsxtfgakgzrblqe.supabase.co';
 var SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6dmpqd3N4dGZnYWtnenJibHFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNTU2ODgsImV4cCI6MjA5NTgzMTY4OH0.S2vYulzhhEBjjBQudLvsqgo-JxoSsRZ7-AOGoPCEg2U';
-var APWD = 'MemoriesbyTSS!2026';
+var OWNER_PWD = 'MemoriesbyTSS!2026';
+var ASSOC_PWD = '225Bags!';
 var client = window.supabase.createClient(SURL, SKEY);
-
 var REMINDER_MINUTES = 30;
-var bookings = [];
-var pendingActionId = null;
+var bookings = [], pendingActionId = null, currentRole = null;
 var today = new Date().toISOString().split('T')[0];
 
 function checkLogin() {
   var pw = document.getElementById('login-password').value;
-  if (pw === APWD) {
+  if (pw === OWNER_PWD) {
+    currentRole = 'owner';
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
+    document.getElementById('owner-screen').style.display = 'block';
+    loadBookings();
+  } else if (pw === ASSOC_PWD) {
+    currentRole = 'associate';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('associate-screen').style.display = 'block';
     loadBookings();
   } else {
     document.getElementById('login-error').style.display = 'block';
@@ -233,232 +358,264 @@ function checkLogin() {
 }
 
 function logout() {
-  document.getElementById('admin-screen').style.display = 'none';
+  currentRole = null; bookings = [];
+  document.getElementById('owner-screen').style.display = 'none';
+  document.getElementById('associate-screen').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('login-password').value = '';
+  document.getElementById('login-error').style.display = 'none';
 }
 
 function formatTime(t) {
-  var parts = t.split(':').map(Number);
-  var h = parts[0], m = parts[1];
-  return (h % 12 || 12) + ':' + (m < 10 ? '0' + m : m) + ' ' + (h >= 12 ? 'PM' : 'AM');
+  var p = t.split(':').map(Number);
+  return (p[0]%12||12) + ':' + String(p[1]).padStart(2,'0') + ' ' + (p[0]>=12?'PM':'AM');
 }
-
 function formatTs(ts) {
   var d = new Date(ts);
-  return d.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit'});
+  return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
 }
-
-function getInitials(n) {
-  return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
-}
-
-function updateStaffAvatar() {
-  var s = document.getElementById('active-staff').value;
-  document.getElementById('staff-avatar').textContent = s ? getInitials(s) : '?';
-}
-
+function getInitials(n) { return n.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase(); }
+function updateStaffAvatar() { var s=document.getElementById('active-staff').value; document.getElementById('staff-avatar').textContent=s?getInitials(s):'?'; }
+function updateAssocAvatar() { var s=document.getElementById('assoc-active-staff').value; document.getElementById('assoc-staff-avatar').textContent=s?getInitials(s):'?'; }
 function updateClock() {
-  document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', {hour:'numeric',minute:'2-digit',second:'2-digit'});
-}
-
-function getBookingStatus(b) {
-  if (b.status === 'Checked out') return 'Checked out';
-  if (b.status === 'Pending') return 'Pending';
-  var now = new Date();
-  var pdt = new Date(b.pickup + 'T' + b.pickup_time);
-  if (now >= pdt) return 'Overdue';
-  if (now >= new Date(pdt.getTime() - REMINDER_MINUTES * 60000)) return 'Due soon';
-  return 'Stored';
+  var t = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit'});
+  if(document.getElementById('owner-clock')) document.getElementById('owner-clock').textContent = t;
+  if(document.getElementById('assoc-clock')) document.getElementById('assoc-clock').textContent = t;
 }
 
 function getActiveStaff() {
-  var s = document.getElementById('active-staff').value;
-  if (!s) { alert('Please select the active staff member first.'); return null; }
+  var sel = currentRole === 'owner' ? 'active-staff' : 'assoc-active-staff';
+  var s = document.getElementById(sel).value;
+  if(!s){alert('Please select your name first.');return null;}
   return s;
 }
 
+function getBookingStatus(b) {
+  if(b.status==='Checked out') return 'Checked out';
+  if(b.status==='Cancelled') return 'Cancelled';
+  if(b.status==='Pending') return 'Pending';
+  var now=new Date(), pdt=new Date(b.pickup+'T'+b.pickup_time);
+  if(now>=pdt) return 'Overdue';
+  if(now>=new Date(pdt-REMINDER_MINUTES*60000)) return 'Due soon';
+  return 'Stored';
+}
+
 async function loadBookings() {
-  var tbody = document.getElementById('booking-tbody');
-  tbody.innerHTML = '<tr><td colspan="9" class="no-results">Loading...</td></tr>';
-  var result = await client.from('bookings').select('*').order('created_at', {ascending: false});
-  if (result.error) {
-    tbody.innerHTML = '<tr><td colspan="9" class="no-results">Error loading bookings. Check your connection.</td></tr>';
-    return;
-  }
+  var result = await client.from('bookings').select('*').order('id', {ascending:true});
+  if(result.error){console.error(result.error);return;}
   bookings = result.data || [];
-  renderTable();
-  renderAlerts();
-  updateStats();
+  if(currentRole==='owner'){renderOwnerBookings();renderOwnerAlerts();updateOwnerStats();}
+  else{renderAssocBookings();renderAssocAlerts();}
 }
 
-function openCheckin(id) {
-  if (!getActiveStaff()) return;
-  var b = bookings.find(function(x){return x.id === id;});
-  if (!b) return;
-  pendingActionId = id;
-  document.getElementById('checkin-modal-sub').textContent = b.id + ' — ' + b.name;
-  document.getElementById('checkin-note').value = '';
-  document.getElementById('checkin-modal').style.display = 'flex';
+function clearSearch(role) {
+  if(role==='owner'){document.getElementById('owner-search').value='';renderOwnerBookings();}
+  else{document.getElementById('assoc-search').value='';renderAssocBookings();}
 }
 
-async function confirmCheckin() {
-  var staff = document.getElementById('active-staff').value;
-  var note = document.getElementById('checkin-note').value.trim();
-  var b = bookings.find(function(x){return x.id === pendingActionId;});
-  if (!b) return;
-  var timeline = (b.timeline || []).concat([{type:'checkin', ts:Date.now(), staff:staff, note:note}]);
-  var result = await client.from('bookings').update({status:'Stored', timeline:timeline}).eq('id', b.id);
-  if (!result.error) { b.status = 'Stored'; b.timeline = timeline; }
-  closeModal();
-  renderTable();
-  renderAlerts();
-  updateStats();
-}
+function buildWA(phone,msg){return 'https://wa.me/'+phone.replace(/[^0-9]/g,'')+'?text='+encodeURIComponent(msg);}
 
-function openCheckout(id) {
-  if (!getActiveStaff()) return;
-  var b = bookings.find(function(x){return x.id === id;});
-  if (!b) return;
-  pendingActionId = id;
-  document.getElementById('checkout-modal-sub').textContent = b.id + ' — ' + b.name;
+function renderBookingCard(b, isOwner) {
   var ls = getBookingStatus(b);
-  var lf = document.getElementById('checkout-late-fee');
-  if (ls === 'Overdue') {
-    var pdt = new Date(b.pickup + 'T' + b.pickup_time);
-    var hoursLate = Math.max(1, Math.ceil((Date.now() - pdt.getTime()) / (1000 * 60 * 60)));
-    var bagCount = (b.bags.match(/(\d+)x/gi) || []).reduce(function(a,m){return a + parseInt(m);}, 0) || 1;
-    lf.style.display = 'block';
-    lf.innerHTML = '<i class="ti ti-alert-circle" style="margin-right:4px;"></i><strong>Late fee applies.</strong> ~' + hoursLate + ' hr' + (hoursLate > 1 ? 's' : '') + ' overdue. Collect additional <strong>$' + (hoursLate * 3 * bagCount).toFixed(2) + '</strong> at the counter.';
+  var isCancelled = b.status === 'Cancelled';
+  var cardClass = isCancelled?'cancelled-card':ls==='Overdue'?'overdue-card':ls==='Due soon'?'reminder-card':'';
+  var stClass = {Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon',Cancelled:'status-cancelled'}[ls]||'status-pending';
+  var typeClass = b.type==='Online'?'type-online':'type-walkin';
+  var modeTag = b.mode==='hourly'?'<span style="font-size:10px;background:#FAEEDA;color:#854F0B;padding:1px 6px;border-radius:8px;">hourly</span>':'';
+  var waMsg = ls==='Overdue'?'Hi '+b.name.split(' ')[0]+', your bags ('+b.id+') are overdue. Late fees apply.':'Hi '+b.name.split(' ')[0]+', reminder — bags ('+b.id+') due at '+formatTime(b.pickup_time)+'.';
+  var waBtn = b.phone?'<a href="'+buildWA(b.phone,waMsg)+'" target="_blank"><button class="btn-wa" title="WhatsApp"><i class="ti ti-brand-whatsapp"></i></button></a>':'';
+
+  var actionBtns = '';
+  if(isCancelled) {
+    actionBtns = '<div class="btn-done" style="flex:1;"><i class="ti ti-ban" style="margin-right:4px;"></i>Cancelled</div>';
+  } else if(ls==='Checked out') {
+    actionBtns = '<div class="btn-done"><i class="ti ti-circle-check" style="margin-right:4px;"></i>Checked out</div>';
+  } else if(ls==='Pending') {
+    actionBtns = '<button class="btn-checkin" onclick="openCheckin(\''+b.id+'\')"><i class="ti ti-login"></i> Check in</button>';
   } else {
-    lf.style.display = 'none';
+    actionBtns = '<button class="btn-checkout" onclick="openCheckout(\''+b.id+'\')"><i class="ti ti-logout"></i> Check out</button>';
   }
-  document.getElementById('checkout-modal').style.display = 'flex';
+
+  var cancelBtn = !isCancelled && ls!=='Checked out' ? '<button class="btn-cancel-sm" onclick="openCancel(\''+b.id+'\')">Cancel</button>' : '';
+  var totalDisplay = '<div class="card-total">💰 $'+Number(b.total).toFixed(2)+' — Pay at store '+modeTag+'</div>';
+
+  return '<div class="booking-card '+cardClass+'">'+
+    '<div class="card-top">'+
+      '<div>'+
+        '<div class="card-id">'+b.id+'</div>'+
+        '<div class="card-name">'+b.name+'</div>'+
+        '<div class="card-phone">'+
+          (b.phone||'')+
+          (b.phone?'<a href="'+buildWA(b.phone,waMsg)+'" target="_blank" style="color:#25D366;font-size:16px;"><i class="ti ti-brand-whatsapp"></i></a>':'')+
+        '</div>'+
+      '</div>'+
+      '<div class="card-badges">'+
+        '<span class="status-pill '+stClass+'">'+ls+'</span>'+
+        '<span class="type-tag '+typeClass+'">'+b.type+'</span>'+
+      '</div>'+
+    '</div>'+
+    '<div class="card-bags"><div class="card-bags-label">Bags</div><div class="card-bags-value">'+b.bags+'</div></div>'+
+    '<div class="card-body">'+
+      '<div class="card-field"><div class="card-field-label">Drop-off</div><div class="card-field-value">'+b.dropoff+'<br>'+formatTime(b.dropoff_time)+'</div></div>'+
+      '<div class="card-field"><div class="card-field-label">Pick-up</div><div class="card-field-value">'+b.pickup+'<br>'+formatTime(b.pickup_time)+'</div></div>'+
+    '</div>'+
+    totalDisplay+
+    '<div class="card-actions">'+actionBtns+'</div>'+
+    (cancelBtn?'<div style="margin-top:8px;">'+cancelBtn+'</div>':'')+
+  '</div>';
 }
 
-async function confirmCheckout() {
-  var staff = document.getElementById('active-staff').value;
-  var b = bookings.find(function(x){return x.id === pendingActionId;});
-  if (!b) return;
-  var ls = getBookingStatus(b);
-  var timeline = (b.timeline || []).concat([{type:'checkout', ts:Date.now(), staff:staff, note:ls === 'Overdue' ? 'Late — fee applied' : 'On time'}]);
-  var result = await client.from('bookings').update({status:'Checked out', timeline:timeline}).eq('id', b.id);
-  if (!result.error) { b.status = 'Checked out'; b.timeline = timeline; }
-  closeModal();
-  renderTable();
-  renderAlerts();
-  updateStats();
-}
+function filterBookings(searchId, dateId, statusId, showCancelledId, isOwner) {
+  var q = document.getElementById(searchId).value.toLowerCase().trim();
+  var df = document.getElementById(dateId).value;
+  var stf = statusId ? document.getElementById(statusId).value : '';
+  var showCancelled = showCancelledId ? document.getElementById(showCancelledId).checked : false;
+  var typeFilter = isOwner && document.getElementById('filter-type') ? document.getElementById('filter-type').value : '';
 
-function closeModal() {
-  document.getElementById('checkin-modal').style.display = 'none';
-  document.getElementById('checkout-modal').style.display = 'none';
-  document.getElementById('cancel-modal').style.display = 'none';
-  pendingActionId = null;
-}
-
-function openCancel(id) {
-  if (!getActiveStaff()) return;
-  var b = bookings.find(function(x){return x.id === id;});
-  if (!b) return;
-  pendingActionId = id;
-  document.getElementById('cancel-modal-sub').textContent = 'Cancel booking ' + b.id + ' for ' + b.name + '?';
-  document.getElementById('cancel-modal').style.display = 'flex';
-}
-
-async function confirmCancel() {
-  var staff = document.getElementById('active-staff').value;
-  var b = bookings.find(function(x){return x.id === pendingActionId;});
-  if (!b) return;
-  var timeline = (b.timeline || []).concat([{type:'cancelled', ts:Date.now(), staff:staff, note:'Booking cancelled'}]);
-  var result = await client.from('bookings').update({status:'Cancelled', timeline:timeline}).eq('id', b.id);
-  if (!result.error) { b.status = 'Cancelled'; b.timeline = timeline; }
-  closeModal();
-  renderTable();
-  renderAlerts();
-  updateStats();
-}
-
-function buildWA(phone, msg) {
-  return 'https://wa.me/' + phone.replace(/[^0-9]/g,'') + '?text=' + encodeURIComponent(msg);
-}
-
-function renderAlerts() {
-  var c = document.getElementById('admin-alerts');
-  var ov = bookings.filter(function(b){return b.status !== 'Checked out' && getBookingStatus(b) === 'Overdue';});
-  var re = bookings.filter(function(b){return b.status === 'Stored' && getBookingStatus(b) === 'Due soon';});
-  var html = '';
-  ov.forEach(function(b) {
-    var msg = 'Hi ' + b.name.split(' ')[0] + ', this is The Souvenir Stop. Your bags (' + b.id + ') were due at ' + formatTime(b.pickup_time) + ' and are now overdue. Late fees are being applied. Please collect your bags or contact us via WhatsApp.';
-    html += '<div class="alert-banner alert-overdue"><i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i><span><strong>' + b.name + '</strong> (' + b.id + ') — overdue since ' + formatTime(b.pickup_time) + '</span><a href="' + buildWA(b.phone, msg) + '" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Alert</button></a></div>';
+  return bookings.filter(function(b) {
+    var ls = getBookingStatus(b);
+    if(b.status==='Cancelled' && !showCancelled) return false;
+    if(!isOwner && (b.status==='Cancelled'||ls==='Checked out')) return false;
+    if(df && b.dropoff!==df) return false;
+    if(stf && ls!==stf) return false;
+    if(typeFilter && b.type!==typeFilter) return false;
+    if(q) {
+      var match = b.name.toLowerCase().includes(q) || b.id.toLowerCase().includes(q) || (b.phone&&b.phone.includes(q));
+      if(!match) return false;
+    }
+    return true;
   });
-  re.forEach(function(b) {
-    var msg = 'Hi ' + b.name.split(' ')[0] + ', just a reminder from The Souvenir Stop — your bags (' + b.id + ') are due for pick-up at ' + formatTime(b.pickup_time) + '. See you soon! If running late, please let us know in advance.';
-    html += '<div class="alert-banner alert-reminder"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0;"></i><span><strong>' + b.name + '</strong> (' + b.id + ') — pick-up at ' + formatTime(b.pickup_time) + ' (~30 min)</span><a href="' + buildWA(b.phone, msg) + '" target="_blank" style="margin-left:auto;"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i> Remind</button></a></div>';
+}
+
+function renderOwnerBookings() {
+  var q = document.getElementById('owner-search').value;
+  var clr = document.getElementById('owner-search-clear');
+  clr.style.display = q ? 'flex' : 'none';
+  var filtered = filterBookings('owner-search','filter-date','filter-status','show-cancelled',true);
+  var container = document.getElementById('owner-booking-cards');
+  if(!filtered.length){container.innerHTML='<div class="no-results"><i class="ti ti-inbox" style="font-size:32px;display:block;margin-bottom:8px;"></i>No bookings found</div>';return;}
+  container.innerHTML = filtered.map(function(b){return renderBookingCard(b,true);}).join('');
+}
+
+function renderAssocBookings() {
+  var q = document.getElementById('assoc-search').value;
+  var clr = document.getElementById('assoc-search-clear');
+  clr.style.display = q ? 'flex' : 'none';
+  var filtered = filterBookings('assoc-search','assoc-filter-date','assoc-filter-status',null,false);
+  var container = document.getElementById('assoc-booking-cards');
+  if(!filtered.length){container.innerHTML='<div class="no-results"><i class="ti ti-inbox" style="font-size:32px;display:block;margin-bottom:8px;"></i>No active bookings for today</div>';return;}
+  container.innerHTML = filtered.map(function(b){return renderBookingCard(b,false);}).join('');
+}
+
+function renderAlerts(bookings, containerId) {
+  var c = document.getElementById(containerId);
+  var ov = bookings.filter(function(b){return b.status!=='Checked out'&&b.status!=='Cancelled'&&getBookingStatus(b)==='Overdue';});
+  var re = bookings.filter(function(b){return b.status==='Stored'&&getBookingStatus(b)==='Due soon';});
+  var html = '';
+  ov.forEach(function(b){
+    var msg='Hi '+b.name.split(' ')[0]+', your bags ('+b.id+') are overdue at The Souvenir Stop. Late fees are being applied. Please collect them ASAP.';
+    html+='<div class="alert-banner alert-overdue"><i class="ti ti-alert-circle" style="font-size:16px;flex-shrink:0;"></i><span><strong>'+b.name+'</strong> ('+b.id+') overdue since '+formatTime(b.pickup_time)+'</span><a href="'+buildWA(b.phone,msg)+'" target="_blank" style="margin-left:auto;"><button style="background:#A32D2D;color:#fff;border:none;padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer;">WhatsApp</button></a></div>';
+  });
+  re.forEach(function(b){
+    var msg='Hi '+b.name.split(' ')[0]+', reminder from The Souvenir Stop — your bags ('+b.id+') are due at '+formatTime(b.pickup_time)+'. See you soon!';
+    html+='<div class="alert-banner alert-reminder"><i class="ti ti-clock" style="font-size:16px;flex-shrink:0;"></i><span><strong>'+b.name+'</strong> ('+b.id+') pick-up at '+formatTime(b.pickup_time)+'</span><a href="'+buildWA(b.phone,msg)+'" target="_blank" style="margin-left:auto;"><button style="background:#854F0B;color:#fff;border:none;padding:6px 10px;border-radius:8px;font-size:12px;cursor:pointer;">Remind</button></a></div>';
   });
   c.innerHTML = html;
 }
 
-function renderTimeline(tl) {
-  if (!tl || !tl.length) return '';
-  var icons = {booked:'dot-booked', checkin:'dot-checkin', checkout:'dot-checkout'};
-  var labels = {booked:'Booked', checkin:'Checked in', checkout:'Checked out'};
-  return '<div class="timeline">' + tl.map(function(e){
-    return '<div class="timeline-item"><div class="timeline-dot ' + (icons[e.type] || 'dot-booked') + '"></div><div><span style="color:var(--color-text);font-weight:500;">' + (labels[e.type] || e.type) + '</span> · ' + e.staff + ' · ' + formatTs(e.ts) + (e.note ? ' <span style="color:var(--color-text3);">— ' + e.note + '</span>' : '') + '</div></div>';
-  }).join('') + '</div>';
+function renderOwnerAlerts(){renderAlerts(bookings,'owner-alerts');}
+function renderAssocAlerts(){renderAlerts(bookings,'assoc-alerts');}
+
+function updateOwnerStats() {
+  var todayB=bookings.filter(function(b){return b.dropoff===today&&b.status!=='Cancelled';});
+  document.getElementById('stat-today').textContent=todayB.length;
+  document.getElementById('stat-stored').textContent=bookings.filter(function(b){return b.status==='Stored';}).length;
+  document.getElementById('stat-overdue').textContent=bookings.filter(function(b){return b.status!=='Checked out'&&b.status!=='Cancelled'&&getBookingStatus(b)==='Overdue';}).length;
+  document.getElementById('stat-revenue').textContent='$'+Math.round(todayB.reduce(function(a,b){return a+Number(b.total);},0));
 }
 
-function renderTable() {
-  var tf = document.getElementById('filter-type').value;
-  var stf = document.getElementById('filter-status').value;
-  var df = document.getElementById('filter-date').value;
-  var showCancelled = document.getElementById('show-cancelled').checked;
-  var filtered = bookings.filter(function(b) {
-    var ls = getBookingStatus(b);
-    if (b.status === 'Cancelled' && !showCancelled) return false;
-    if (tf && b.type !== tf) return false;
-    if (stf && ls !== stf) return false;
-    if (df && b.dropoff !== df) return false;
-    return true;
-  });
-  var tbody = document.getElementById('booking-tbody');
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="9" class="no-results"><i class="ti ti-inbox" style="font-size:22px;display:block;margin-bottom:6px;"></i>No bookings found</td></tr>';
-    return;
-  }
-  tbody.innerHTML = filtered.map(function(b) {
-    var ls = getBookingStatus(b);
-    var isCancelled = b.status === 'Cancelled';
-    var stClass = {Stored:'status-stored','Checked out':'status-checkedout',Pending:'status-pending',Overdue:'status-overdue','Due soon':'status-duesoon',Cancelled:'status-cancelled'}[ls] || 'status-pending';
-    if (isCancelled) stClass = 'status-cancelled';
-    var rowClass = isCancelled ? 'cancelled-row' : ls === 'Overdue' ? 'overdue-row' : ls === 'Due soon' ? 'reminder-row' : '';
-    var typeClass = b.type === 'Online' ? 'type-online' : 'type-walkin';
-    var modeTag = b.mode === 'hourly' ? '<span style="font-size:10px;background:#FAEEDA;color:#854F0B;padding:1px 5px;border-radius:8px;margin-left:4px;">hourly</span>' : '';
-    var waMsg = ls === 'Overdue' ? 'Hi ' + b.name.split(' ')[0] + ', your bags (' + b.id + ') are overdue. Late fees apply. Please collect them or contact us.' : 'Hi ' + b.name.split(' ')[0] + ', reminder — bags (' + b.id + ') due at ' + formatTime(b.pickup_time) + '.';
-    var waLink = b.phone && !isCancelled ? '<a href="' + buildWA(b.phone, waMsg) + '" target="_blank"><button class="wa-btn"><i class="ti ti-brand-whatsapp"></i></button></a>' : '';
-    var lastStaff = b.timeline && b.timeline.length > 1 ? '<div style="font-size:10px;color:var(--color-text3);margin-top:2px;">Last: ' + b.timeline[b.timeline.length-1].staff + '</div>' : '';
-    var cancelBtn = !isCancelled && ls !== 'Checked out' ? '<button class="cancel-btn" onclick="openCancel(\'' + b.id + '\')" title="Cancel booking"><i class="ti ti-x"></i></button>' : '';
-    var btn = isCancelled ? '<span style="font-size:12px;color:var(--color-text3);">Cancelled</span>' : ls === 'Pending' ? '<button class="action-btn" onclick="openCheckin(\'' + b.id + '\')"><i class="ti ti-login" style="margin-right:3px;"></i>Check in</button>' : ls === 'Checked out' ? '<span style="font-size:12px;color:var(--color-text3);">✓ Done</span>' : '<button class="action-btn" onclick="openCheckout(\'' + b.id + '\')"><i class="ti ti-logout" style="margin-right:3px;"></i>Check out</button>';
-    return '<tr class="' + rowClass + '"><td style="font-family:monospace;font-size:12px;">' + b.id + '</td><td><div>' + b.name + '</div><div style="font-size:11px;color:var(--color-text3);">' + (b.phone || '') + '</div></td><td style="font-size:12px;color:var(--color-text2);">' + b.bags + '</td><td style="font-size:12px;">' + b.dropoff + '<br><span style="color:var(--color-text3);">' + formatTime(b.dropoff_time) + '</span></td><td style="font-size:12px;">' + b.pickup + '<br><span style="color:var(--color-text3);">' + formatTime(b.pickup_time) + '</span></td><td><span class="type-tag ' + typeClass + '">' + (b.type || 'Online') + '</span></td><td style="font-weight:600;">$' + Number(b.total).toFixed(2) + modeTag + '</td><td><span class="status-pill ' + stClass + '">' + (isCancelled ? 'Cancelled' : ls) + '</span>' + lastStaff + renderTimeline(b.timeline) + '</td><td style="white-space:nowrap;">' + waLink + btn + cancelBtn + '</td></tr>';
-  }).join('');
+function openCheckin(id) {
+  if(!getActiveStaff()) return;
+  var b=bookings.find(function(x){return x.id===id;});if(!b)return;
+  pendingActionId=id;
+  document.getElementById('checkin-modal-sub').textContent=b.id+' — '+b.name+' · '+b.bags;
+  document.getElementById('checkin-note').value='';
+  document.getElementById('checkin-modal').style.display='flex';
 }
 
-function updateStats() {
-  var todayB = bookings.filter(function(b){return b.dropoff === today && b.status !== 'Cancelled';});
-  document.getElementById('stat-today').textContent = todayB.length;
-  document.getElementById('stat-stored').textContent = bookings.filter(function(b){return b.status === 'Stored';}).length;
-  document.getElementById('stat-overdue').textContent = bookings.filter(function(b){return b.status !== 'Checked out' && b.status !== 'Cancelled' && getBookingStatus(b) === 'Overdue';}).length;
-  document.getElementById('stat-revenue').textContent = '$' + Math.round(todayB.reduce(function(a,b){return a + Number(b.total);}, 0));
+async function confirmCheckin() {
+  var staff=getActiveStaff();if(!staff)return;
+  var note=document.getElementById('checkin-note').value.trim();
+  var b=bookings.find(function(x){return x.id===pendingActionId;});if(!b)return;
+  var timeline=(b.timeline||[]).concat([{type:'checkin',ts:Date.now(),staff:staff,note:note}]);
+  var r=await client.from('bookings').update({status:'Stored',timeline:timeline}).eq('id',b.id);
+  if(!r.error){b.status='Stored';b.timeline=timeline;}
+  closeModal();refreshAll();
 }
 
-document.getElementById('filter-date').value = today;
-updateClock();
-setInterval(updateClock, 1000);
-setInterval(function(){
-  if (document.getElementById('admin-screen').style.display !== 'none') {
-    renderTable(); renderAlerts(); updateStats();
-  }
-}, 30000);
+function openCheckout(id) {
+  if(!getActiveStaff()) return;
+  var b=bookings.find(function(x){return x.id===id;});if(!b)return;
+  pendingActionId=id;
+  document.getElementById('checkout-modal-sub').textContent=b.id+' — '+b.name+' · '+b.bags;
+  var ls=getBookingStatus(b);
+  var lf=document.getElementById('checkout-late-fee');
+  if(ls==='Overdue'){
+    var pdt=new Date(b.pickup+'T'+b.pickup_time);
+    var hoursLate=Math.max(1,Math.ceil((Date.now()-pdt.getTime())/(1000*60*60)));
+    var bagCount=(b.bags.match(/(\d+)[x×]/gi)||[]).reduce(function(a,m){return a+parseInt(m);},0)||1;
+    lf.style.display='block';
+    lf.innerHTML='<i class="ti ti-alert-circle" style="margin-right:4px;"></i><strong>Late fee applies.</strong> ~'+hoursLate+' hr'+(hoursLate>1?'s':'')+' overdue. Collect <strong>$'+(hoursLate*3*bagCount).toFixed(2)+'</strong> extra at counter.';
+  } else lf.style.display='none';
+  document.getElementById('checkout-modal').style.display='flex';
+}
+
+async function confirmCheckout() {
+  var staff=getActiveStaff();if(!staff)return;
+  var b=bookings.find(function(x){return x.id===pendingActionId;});if(!b)return;
+  var ls=getBookingStatus(b);
+  var timeline=(b.timeline||[]).concat([{type:'checkout',ts:Date.now(),staff:staff,note:ls==='Overdue'?'Late — fee applied':'On time'}]);
+  var r=await client.from('bookings').update({status:'Checked out',timeline:timeline}).eq('id',b.id);
+  if(!r.error){b.status='Checked out';b.timeline=timeline;}
+  closeModal();refreshAll();
+}
+
+function openCancel(id) {
+  if(!getActiveStaff()) return;
+  var b=bookings.find(function(x){return x.id===id;});if(!b)return;
+  pendingActionId=id;
+  document.getElementById('cancel-modal-sub').textContent='Cancel booking '+b.id+' for '+b.name+'?';
+  document.getElementById('cancel-modal').style.display='flex';
+}
+
+async function confirmCancel() {
+  var staff=getActiveStaff();if(!staff)return;
+  var b=bookings.find(function(x){return x.id===pendingActionId;});if(!b)return;
+  var timeline=(b.timeline||[]).concat([{type:'cancelled',ts:Date.now(),staff:staff,note:'Booking cancelled'}]);
+  var r=await client.from('bookings').update({status:'Cancelled',timeline:timeline}).eq('id',b.id);
+  if(!r.error){b.status='Cancelled';b.timeline=timeline;}
+  closeModal();refreshAll();
+}
+
+function closeModal() {
+  document.getElementById('checkin-modal').style.display='none';
+  document.getElementById('checkout-modal').style.display='none';
+  document.getElementById('cancel-modal').style.display='none';
+  pendingActionId=null;
+}
+
+function refreshAll() {
+  if(currentRole==='owner'){renderOwnerBookings();renderOwnerAlerts();updateOwnerStats();}
+  else{renderAssocBookings();renderAssocAlerts();}
+}
+
+function init() {
+  document.getElementById('filter-date').value=today;
+  document.getElementById('assoc-filter-date').value=today;
+  updateClock();setInterval(updateClock,1000);
+  setInterval(function(){if(currentRole)loadBookings();},30000);
+}
+init();
 </script>
 </body>
 </html>
